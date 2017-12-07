@@ -982,5 +982,5 @@ def reset_otp_secret(user):
 def throttle_user_creation():
 	if frappe.flags.in_import:
 		return
-	if frappe.db.get_creation_count('User', 60) > 60:
+	if frappe.db.get_creation_count('User', 60) > 1000:
 		frappe.throw(_('Throttled'))
