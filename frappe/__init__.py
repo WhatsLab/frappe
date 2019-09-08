@@ -96,6 +96,7 @@ def set_user_lang(user, user_language=None):
 
 # local-globals
 db = local("db")
+db_ro = local("db_ro")
 conf = local("conf")
 form = form_dict = local("form_dict")
 request = local("request")
@@ -185,6 +186,7 @@ def connect(site=None, db_name=None):
 		init(site)
 
 	local.db = Database(user=db_name or local.conf.db_name)
+	local.db_ro = Database(read_only=True)
 	set_user("Administrator")
 
 def connect_replica():
@@ -251,6 +253,8 @@ def destroy():
 	"""Closes connection and releases werkzeug local."""
 	if db:
 		db.close()
+	if db_ro:
+		db_ro.close()
 
 	release_local(local)
 
