@@ -72,17 +72,9 @@ class Database:
 			if use_default:
 				self.user = frappe.conf.db_name
 
-			self.transaction_writes = 0
-			self.auto_commit_on_many_writes = 0
 
 			self.password = password or frappe.conf.db_password
-			self.value_cache = {}
 
-			# this param is to load CSV's with LOCAL keyword.
-			# it can be set in site_config as > bench set-config local_infile 1
-			# once the local-infile is set on MySql Server, the client needs to connect with this option
-			# Connections without this option leads to: 'The used command is not allowed with this MariaDB version' error
-			self.local_infile = local_infile or frappe.conf.local_infile
 		else:
 			self.host = frappe.conf.db_read_host or 'localhost'
 			self.user = frappe.conf.db_name_read
@@ -95,12 +87,17 @@ class Database:
 			if use_default:
 				self.user = frappe.conf.db_name_read
 
-			self.transaction_writes = 0
-			self.auto_commit_on_many_writes = 0
-
 			self.password = password or frappe.conf.db_password_read
 
-			self.value_cache = {}
+		self.transaction_writes = 0
+		self.auto_commit_on_many_writes = 0
+
+		self.value_cache = {}
+		# this param is to load CSV's with LOCAL keyword.
+		# it can be set in site_config as > bench set-config local_infile 1
+		# once the local-infile is set on MySql Server, the client needs to connect with this option
+		# Connections without this option leads to: 'The used command is not allowed with this MariaDB version' error
+		self.local_infile = local_infile or frappe.conf.local_infile
 
 
 	def get_db_login(self, ac_name):
