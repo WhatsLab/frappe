@@ -76,7 +76,13 @@ class Database:
 			self.password = password or frappe.conf.db_password
 
 		else:
-			self.host = frappe.conf.db_read_host or 'localhost'
+			ro_host_count = int(frappe.conf.db_read_host_count)
+			import random
+			random.randint(1,ro_host_count)
+			host_inx = random.randint(1,ro_host_count)
+			host_key = "db_read_host_{}".format(host_inx)
+
+			self.host = frappe.conf.get(host_key) or 'localhost'
 			self.user = frappe.conf.db_name_read
 			self.db_name = frappe.conf.db_name
 			self._conn = None

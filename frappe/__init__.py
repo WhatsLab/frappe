@@ -189,6 +189,11 @@ def connect(site=None, db_name=None):
 	local.db_ro = Database(read_only=True)
 	set_user("Administrator")
 
+def connect_ro():
+	from frappe.database import Database
+	local.db_ro = Database(read_only=True)
+
+
 def connect_replica():
 	from frappe.database import Database
 	user = local.conf.db_name
@@ -878,6 +883,9 @@ def get_installed_apps(sort=False, frappe_last=False):
 
 	if not db:
 		connect()
+	
+	if not db_ro:
+		connect_ro()
 
 	installed = json.loads(db.get_global("installed_apps") or "[]")
 
