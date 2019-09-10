@@ -96,6 +96,7 @@ def set_user_lang(user, user_language=None):
 
 # local-globals
 db = local("db")
+db_ro = local("db_ro")
 conf = local("conf")
 form = form_dict = local("form_dict")
 request = local("request")
@@ -185,7 +186,13 @@ def connect(site=None, db_name=None):
 		init(site)
 
 	local.db = Database(user=db_name or local.conf.db_name)
+	local.db_ro = Database(read_only=True)
 	set_user("Administrator")
+
+def connect_ro():
+	from frappe.database import Database
+	local.db_ro = Database(read_only=True)
+
 
 def connect_replica():
 	from frappe.database import Database
@@ -251,6 +258,8 @@ def destroy():
 	"""Closes connection and releases werkzeug local."""
 	if db:
 		db.close()
+	if db_ro:
+		db_ro.close()
 
 	release_local(local)
 
@@ -874,6 +883,9 @@ def get_installed_apps(sort=False, frappe_last=False):
 
 	if not db:
 		connect()
+	
+	if not db_ro:
+		connect_ro()
 
 	installed = json.loads(db.get_global("installed_apps") or "[]")
 

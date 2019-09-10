@@ -28,6 +28,7 @@ class DatabaseQuery(object):
 		self.user = user or frappe.session.user
 		self.ignore_ifnull = False
 		self.flags = frappe._dict()
+		self.read_only = False
 		self.reference_doctype = None
 
 	def execute(self, query=None, fields=None, filters=None, or_filters=None,
@@ -36,11 +37,12 @@ class DatabaseQuery(object):
 		ignore_permissions=False, user=None, with_comment_count=False,
 		join='left join', distinct=False, start=None, page_length=None, limit=None,
 		ignore_ifnull=False, save_user_settings=False, save_user_settings_fields=False,
-		update=None, add_total_row=None, user_settings=None, reference_doctype=None):
+		update=None, add_total_row=None, user_settings=None, reference_doctype=None, read_only=False):
 		if not ignore_permissions and not frappe.has_permission(self.doctype, "read", user=user):
 			frappe.flags.error_message = _('Insufficient Permission for {0}').format(frappe.bold(self.doctype))
 			raise frappe.PermissionError(self.doctype)
 
+		self.read_only = read_only
 		# filters and fields swappable
 		# its hard to remember what comes first
 		if (isinstance(fields, dict)
@@ -113,6 +115,9 @@ class DatabaseQuery(object):
 
 		query = """select %(fields)s from %(tables)s %(conditions)s
 			%(group_by)s %(order_by)s %(limit)s""" % args
+		
+		if self.read_only:
+			return frappe.db_ro.sql(query, as_dict=not self.as_list, debug=self.debug, update=self.update)
 
 		return frappe.db.sql(query, as_dict=not self.as_list, debug=self.debug, update=self.update)
 
@@ -589,6 +594,10 @@ class DatabaseQuery(object):
 	def run_custom_query(self, query):
 		if '%(key)s' in query:
 			query = query.replace('%(key)s', 'name')
+		
+		if self.read_only:
+			return frappe.db_ro.sql(query, as_dict = (not self.as_list))
+
 		return frappe.db.sql(query, as_dict = (not self.as_list))
 
 	def set_order_by(self, args):
