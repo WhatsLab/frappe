@@ -13,6 +13,8 @@ from werkzeug.exceptions import HTTPException, NotFound
 from werkzeug.contrib.profiler import ProfilerMiddleware
 from werkzeug.wsgi import SharedDataMiddleware
 
+import urllib
+
 import frappe
 import frappe.handler
 import frappe.auth
@@ -104,6 +106,17 @@ def application(request):
 def init_request(request):
 	frappe.local.request = request
 	frappe.local.is_ajax = frappe.get_request_header("X-Requested-With")=="XMLHttpRequest"
+
+	url = frappe.local.request.url
+	if '?' in url:
+		inx = url.index('?')
+		query = url[inx+1:]
+		query = urllib.quote(query, safe='?')
+		url = url[:inx+1]+query
+		frappe.local.request.url = url
+
+	path = frappe.local.request.path
+	frappe.local.request.path =urllib.quote(path, safe='/')
 
 	site = _site or request.headers.get('X-Frappe-Site-Name') or get_site_name(request.host)
 	frappe.init(site=site, sites_path=_sites_path)
