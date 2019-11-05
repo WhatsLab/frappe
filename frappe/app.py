@@ -74,6 +74,7 @@ def application(request):
 			response = frappe.utils.response.download_private_file(request.path)
 
 		elif frappe.local.request.method in ('GET', 'HEAD', 'POST'):
+			escape_web_url()
 			response = frappe.website.render.render()
 
 		else:
@@ -107,17 +108,6 @@ def init_request(request):
 	frappe.local.request = request
 	frappe.local.is_ajax = frappe.get_request_header("X-Requested-With")=="XMLHttpRequest"
 
-	url = frappe.local.request.url
-	if '?' in url:
-		inx = url.index('?')
-		query = url[inx+1:]
-		query = urllib.quote(query, safe='?')
-		url = url[:inx+1]+query
-		frappe.local.request.url = url
-
-	path = frappe.local.request.path
-	frappe.local.request.path =urllib.quote(path, safe='/')
-
 	site = _site or request.headers.get('X-Frappe-Site-Name') or get_site_name(request.host)
 	frappe.init(site=site, sites_path=_sites_path)
 
@@ -131,6 +121,19 @@ def init_request(request):
 	make_form_dict(request)
 
 	frappe.local.http_request = frappe.auth.HTTPRequest()
+
+def escape_web_url():
+	url = frappe.local.request.url
+	if '?' in url:
+		inx = url.index('?')
+		query = url[inx+1:]
+		query = urllib.quote(query, safe='/?=%&')
+		url = url[:inx+1]+query
+		frappe.local.request.url = url
+
+	path = frappe.local.request.path
+	frappe.local.request.path =urllib.quote(path, safe='/?=%')
+
 
 def make_form_dict(request):
 	import json
