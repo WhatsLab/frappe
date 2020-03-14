@@ -234,7 +234,7 @@ def is_scheduler_inactive():
 
 def is_scheduler_disabled():
 	if not frappe.conf.constants.get("enable_scheduler_{0}".format(
-			platform.node().replace("-", "_"), True):
+			platform.node().replace("-", "_")), True):
 		return True
 	if frappe.conf.disable_scheduler:
 		return True
@@ -243,7 +243,7 @@ def is_scheduler_disabled():
 
 def toggle_scheduler(enable):
 	frappe.db.set_value("System Settings", None, "enable_scheduler_{0}".format(
-			platform.node().replace("-", "_"), 1 if enable else 0)
+			platform.node().replace("-", "_")), 1 if enable else 0)
 
 def enable_scheduler():
 	toggle_scheduler(True)
