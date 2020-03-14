@@ -4,12 +4,18 @@ import sys
 import frappe
 from frappe.utils import cint
 from frappe.commands import pass_context, get_site
+import platform 
+
 
 def _is_scheduler_enabled():
 	enable_scheduler = False
 	try:
+		
 		frappe.connect()
-		enable_scheduler = cint(frappe.db.get_single_value("System Settings", "enable_scheduler")) and True or False
+		enable_scheduler = cint(frappe.db.get_single_value("System Settings", "enable_scheduler_{0}".format(
+			platform.node().replace("-", "_")
+		)
+								  )) and True or False
 	except:
 		pass
 	finally:
