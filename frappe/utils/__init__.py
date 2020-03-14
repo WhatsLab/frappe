@@ -16,6 +16,7 @@ from six.moves.urllib.parse import quote
 from six import text_type, string_types
 import io
 from gzip import GzipFile
+import platform
 
 default_fields = ['doctype', 'name', 'owner', 'creation', 'modified', 'modified_by',
 	'parent', 'parentfield', 'parenttype', 'idx', 'docstatus']
