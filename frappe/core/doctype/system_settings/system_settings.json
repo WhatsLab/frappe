@@ -21,6 +21,9 @@
   "backup_limit",
   "background_workers",
   "enable_scheduler",
+  "enable_scheduler_worker_1",
+  "enable_scheduler_worker_2",
+  "enable_scheduler_worker_3",
   "scheduler_last_event",
   "permissions",
   "apply_strict_user_permissions",
@@ -165,7 +168,31 @@
    "description": "Run scheduled jobs only if checked",
    "fieldname": "enable_scheduler",
    "fieldtype": "Check",
-   "hidden": 1,
+   "hidden": 0,
+   "label": "Enable Scheduled Jobs"
+  },
+  {
+   "default": "0",
+   "description": "Run scheduled jobs only if checked",
+   "fieldname": "enable_scheduler_worker_1",
+   "fieldtype": "Check",
+   "hidden": 0,
+   "label": "Enable Scheduled Jobs"
+  },
+  {
+   "default": "0",
+   "description": "Run scheduled jobs only if checked",
+   "fieldname": "enable_scheduler_worker_2",
+   "fieldtype": "Check",
+   "hidden": 0,
+   "label": "Enable Scheduled Jobs"
+  },
+  {
+   "default": "0",
+   "description": "Run scheduled jobs only if checked",
+   "fieldname": "enable_scheduler_worker_3",
+   "fieldtype": "Check",
+   "hidden": 0,
    "label": "Enable Scheduled Jobs"
   },
   {
@@ -401,7 +428,7 @@
  ],
  "icon": "fa fa-cog",
  "issingle": 1,
- "modified": "2019-08-16 08:26:45.936626",
+ "modified": "2019-09-16 08:26:45.936626",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "System Settings",
