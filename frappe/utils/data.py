@@ -41,7 +41,7 @@ def getdate(string_date=None):
 	return parser.parse(string_date).date()
 
 def get_datetime(datetime_str=None):
-	if not datetime_str:
+	if not datetime_str or datetime_str == "0000-00-00 00:00:00.000000":
 		return now_datetime()
 
 	if isinstance(datetime_str, (datetime.datetime, datetime.timedelta)):

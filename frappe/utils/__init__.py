@@ -16,6 +16,7 @@ from six.moves.urllib.parse import quote
 from six import text_type, string_types
 import io
 from gzip import GzipFile
+import platform
 
 default_fields = ['doctype', 'name', 'owner', 'creation', 'modified', 'modified_by',
 	'parent', 'parentfield', 'parenttype', 'idx', 'docstatus']
@@ -556,8 +557,8 @@ def get_site_info():
 		'language': system_settings.language or 'english',
 		'time_zone': system_settings.time_zone,
 		'setup_complete': cint(system_settings.setup_complete),
-		'scheduler_enabled': system_settings.enable_scheduler,
-
+		'scheduler_enabled': frappe.conf.constants.get("enable_scheduler_{0}".format(
+ 			platform.node().replace("-", "_")), True),
 		# usage
 		'emails_sent': get_emails_sent_this_month(),
 		'space_used': flt((space_usage.total or 0) / 1024.0, 2),

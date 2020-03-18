@@ -21,6 +21,11 @@
   "backup_limit",
   "background_workers",
   "enable_scheduler",
+  "enable_scheduler_worker_1",
+  "enable_scheduler_worker_2",
+  "enable_scheduler_worker_3",
+  "enable_scheduler_worker_4",
+  "enable_scheduler_worker_5",
   "scheduler_last_event",
   "permissions",
   "apply_strict_user_permissions",
@@ -170,8 +175,48 @@
    "description": "Run scheduled jobs only if checked",
    "fieldname": "enable_scheduler",
    "fieldtype": "Check",
-   "hidden": 1,
+   "hidden": 0,
    "label": "Enable Scheduled Jobs"
+  },
+  {
+   "default": "0",
+   "description": "Run scheduled jobs only if checked",
+   "fieldname": "enable_scheduler_worker_1",
+   "fieldtype": "Check",
+   "hidden": 0,
+   "label": "Enable Scheduled Jobs on Worker-1"
+  },
+  {
+   "default": "0",
+   "description": "Run scheduled jobs only if checked",
+   "fieldname": "enable_scheduler_worker_2",
+   "fieldtype": "Check",
+   "hidden": 0,
+   "label": "Enable Scheduled Jobs on Worker-2"
+  },
+  {
+   "default": "0",
+   "description": "Run scheduled jobs only if checked",
+   "fieldname": "enable_scheduler_worker_3",
+   "fieldtype": "Check",
+   "hidden": 0,
+   "label": "Enable Scheduled Jobs on Worker-3"
+  },
+  {
+   "default": "0",
+   "description": "Run scheduled jobs only if checked",
+   "fieldname": "enable_scheduler_worker_4",
+   "fieldtype": "Check",
+   "hidden": 0,
+   "label": "Enable Scheduled Jobs on Worker-4"
+  },
+  {
+   "default": "0",
+   "description": "Run scheduled jobs only if checked",
+   "fieldname": "enable_scheduler_worker_5",
+   "fieldtype": "Check",
+   "hidden": 0,
+   "label": "Enable Scheduled Jobs on Worker-5"
   },
   {
    "fieldname": "scheduler_last_event",
