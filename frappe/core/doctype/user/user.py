@@ -579,28 +579,73 @@ def test_password_strength(new_password, key=None, old_password=None, user_data=
 	from frappe.utils.password_strength import test_password_strength as _test_password_strength
 
 	password_policy = frappe.db.get_value("System Settings", None,
-		["enable_password_policy", "minimum_password_score"], as_dict=True) or {}
+		["enable_password_policy", "minimum_password_score", "min_password_length",
+		 "include_symbols", "include_numbers", "include_lowercase_characters","include_uppercase_characters"], as_dict=True) or {}
 
 	enable_password_policy = cint(password_policy.get("enable_password_policy", 0))
 	minimum_password_score = cint(password_policy.get("minimum_password_score", 0))
+	minimum_password_length = cint(password_policy.get("min_password_length", 4))
+	include_symbols = cint(password_policy.get("include_symbols", 0))
+	include_numbers = cint(password_policy.get("include_numbers", 0))
+	include_lowercase_characters = cint(password_policy.get("include_lowercase_characters", 0))
+	include_uppercase_characters = cint(password_policy.get("include_uppercase_characters", 0))
 
-	if not enable_password_policy:
-		return {}
 
-	if not user_data:
-		user_data = frappe.db.get_value('User', frappe.session.user,
-			['first_name', 'middle_name', 'last_name', 'email', 'birth_date'])
+	feedback ={
+		"feedback":{
+			"warning": "",
+			"suggestions": [
+				_("Use a few words, avoid common phrases."),
+				_("No need for symbols, digits, or uppercase letters."),
+			],
+		}
+	}
 
-	if new_password:
-		result = _test_password_strength(new_password, user_inputs=user_data)
-		password_policy_validation_passed = False
+	length_error = len(password) < minimum_password_length
+	if length_error:
+		feedback['feedback']['password_policy_validation_passed'] = False
+		return feedback
 
-		# score should be greater than 0 and minimum_password_score
-		if result.get('score') and result.get('score') >= minimum_password_score:
-			password_policy_validation_passed = True
+	# searching for digits
+	digit_error = re.search(r"\d", password) is None
+	if include_numbers and digit_error:
+		feedback['feedback']['password_policy_validation_passed'] = False
+		return
 
-		result['feedback']['password_policy_validation_passed'] = password_policy_validation_passed
-		return result
+	# searching for uppercase
+	uppercase_error = re.search(r"[A-Z]", password) is None
+	if include_uppercase_characters and uppercase_error:
+		feedback['feedback']['password_policy_validation_passed'] = False
+		return feedback
+
+	# searching for lowercase
+	lowercase_error = re.search(r"[a-z]", password) is None
+	if include_lowercase_characters and lowercase_error:
+		feedback['feedback']['password_policy_validation_passed'] = False
+		return feedback
+
+	# searching for symbols
+	symbol_error = re.search(r"[ !#$%&'()*+,-./[\\\]^_`{|}~" + r'"]', password) is None
+	if include_symbols and symbol_error:
+		feedback['feedback']['password_policy_validation_passed'] = False
+		return feedback
+
+	return {}
+
+	# if not user_data:
+	# 	user_data = frappe.db.get_value('User', frappe.session.user,
+	# 		['first_name', 'middle_name', 'last_name', 'email', 'birth_date'])
+	#
+	# if new_password:
+	# 	result = _test_password_strength(new_password, user_inputs=user_data)
+	# 	password_policy_validation_passed = False
+	#
+	# 	# score should be greater than 0 and minimum_password_score
+	# 	if result.get('score') and result.get('score') >= minimum_password_score:
+	# 		password_policy_validation_passed = True
+	#
+	# 	result['feedback']['password_policy_validation_passed'] = password_policy_validation_passed
+	# 	return result
 
 #for login
 @frappe.whitelist()
