@@ -38,6 +38,11 @@
   "force_user_to_reset_password",
   "column_break_31",
   "enable_password_policy",
+  "min_password_length",
+  "include_symbols",
+  "include_numbers",
+  "include_lowercase_characters",
+  "include_uppercase_characters",
   "minimum_password_score",
   "brute_force_security",
   "allow_consecutive_login_attempts",
@@ -397,11 +402,41 @@
    "fieldname": "allow_guests_to_upload_files",
    "fieldtype": "Check",
    "label": "Allow Guests to Upload Files"
+  },
+  {
+   "default": "5",
+   "fieldname": "min_password_length",
+   "fieldtype": "Int",
+   "label": "Password Length"
+  },
+  {
+   "default": "0",
+   "fieldname": "include_symbols",
+   "fieldtype": "Check",
+   "label": "Include symbols \"( e.g. @#$% )\""
+  },
+  {
+   "default": "0",
+   "fieldname": "include_numbers",
+   "fieldtype": "Check",
+   "label": "include numbers \"( e.g. 123456 )\""
+  },
+  {
+   "default": "0",
+   "fieldname": "include_lowercase_characters",
+   "fieldtype": "Check",
+   "label": "include lowercase characters \"( e.g. abcdefgh )\""
+  },
+  {
+   "default": "0",
+   "fieldname": "include_uppercase_characters",
+   "fieldtype": "Check",
+   "label": "include uppercase characters \"( e.g. ABCDEFGH )\""
   }
  ],
  "icon": "fa fa-cog",
  "issingle": 1,
- "modified": "2019-08-16 08:26:45.936626",
+ "modified": "2020-03-18 14:17:09.486293",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "System Settings",
