@@ -595,6 +595,7 @@ def test_password_strength(new_password, key=None, old_password=None, user_data=
 		"feedback":{
 			"warning": "",
 			"suggestions": [],
+			"password_policy_validation_passed":True,
 		}
 	}
 	if new_password:
