@@ -634,7 +634,7 @@ def test_password_strength(new_password, key=None, old_password=None, user_data=
 			feedback['feedback']['suggestions'].append(_("Password must contains at least one speical symbol"))
 			return feedback
 
-	return {}
+	return feedback
 
 	# if not user_data:
 	# 	user_data = frappe.db.get_value('User', frappe.session.user,
