@@ -594,10 +594,7 @@ def test_password_strength(new_password, key=None, old_password=None, user_data=
 	feedback ={
 		"feedback":{
 			"warning": "",
-			"suggestions": [
-				_("Use a few words, avoid common phrases."),
-				_("No need for symbols, digits, or uppercase letters."),
-			],
+			"suggestions": [],
 		}
 	}
 	if new_password:
@@ -605,30 +602,35 @@ def test_password_strength(new_password, key=None, old_password=None, user_data=
 		length_error = len(password) < minimum_password_length
 		if length_error:
 			feedback['feedback']['password_policy_validation_passed'] = False
+			feedback['feedback']['suggestions'].append(_('Password must be at least {0} characters long').format(minimum_password_length))
 			return feedback
 
 		# searching for digits
 		digit_error = re.search(r"\d", password) is None
 		if include_numbers and digit_error:
 			feedback['feedback']['password_policy_validation_passed'] = False
+			feedback['feedback']['suggestions'].append(_("Password must contains at least one digit"))
 			return
 
 		# searching for uppercase
 		uppercase_error = re.search(r"[A-Z]", password) is None
 		if include_uppercase_characters and uppercase_error:
 			feedback['feedback']['password_policy_validation_passed'] = False
+			feedback['feedback']['suggestions'].append(_("Password must contains at least one uppercase"))
 			return feedback
 
 		# searching for lowercase
 		lowercase_error = re.search(r"[a-z]", password) is None
 		if include_lowercase_characters and lowercase_error:
 			feedback['feedback']['password_policy_validation_passed'] = False
+			feedback['feedback']['suggestions'].append(_("Password must contains at least one lowercase"))
 			return feedback
 
 		# searching for symbols
 		symbol_error = re.search(r"[ !#$%&'()*+,-./[\\\]^_`{|}~" + r'"]', password) is None
 		if include_symbols and symbol_error:
 			feedback['feedback']['password_policy_validation_passed'] = False
+			feedback['feedback']['suggestions'].append(_("Password must contains at least one speical symbol"))
 			return feedback
 
 	return {}
