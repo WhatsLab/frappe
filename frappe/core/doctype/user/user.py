@@ -611,7 +611,7 @@ def test_password_strength(new_password, key=None, old_password=None, user_data=
 		if include_numbers and digit_error:
 			feedback['feedback']['password_policy_validation_passed'] = False
 			feedback['feedback']['suggestions'].append(_("Password must contains at least one digit"))
-			return
+			return feedback
 
 		# searching for uppercase
 		uppercase_error = re.search(r"[A-Z]", password) is None
