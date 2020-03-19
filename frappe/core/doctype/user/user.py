@@ -644,17 +644,25 @@ def test_password_strength(new_password, key=None, old_password=None, user_data=
 			return feedback
 
 		if exclude_similar_characters:
-			password_set = set(password)
-			similar_chars = {
-				'1':r"[lL!i|]",'l': r"[1L!i|]",'L': r"[1l!i|]",'!': r"[1lLi|]", 'i': r"[1lL!|]",'|': r"[1lL!i]",
-				'o':r"[O0]",'O':r"[o0]", '0':r"[oO]"
-			}
-
-			for c in similar_chars:
-				if c in password_set and re.search(similar_chars[c], password) is not None:
+			from collections import Counter
+			count = Counter(password)
+			for c in count:
+				if c>1:
 					feedback['feedback']['password_policy_validation_passed'] = False
 					feedback['feedback']['suggestions'].append(_("Password must not contains similar characters"))
 					return feedback
+
+		# password_set = set(password)
+			# similar_chars = {
+			# 	'1':r"[lL!i|]",'l': r"[1L!i|]",'L': r"[1l!i|]",'!': r"[1lLi|]", 'i': r"[1lL!|]",'|': r"[1lL!i]",
+			# 	'o':r"[O0]",'O':r"[o0]", '0':r"[oO]"
+			# }
+			#
+			# for c in similar_chars:
+			# 	if c in password_set and re.search(similar_chars[c], password) is not None:
+			# 		feedback['feedback']['password_policy_validation_passed'] = False
+			# 		feedback['feedback']['suggestions'].append(_("Password must not contains similar characters"))
+			# 		return feedback
 
 	return feedback
 
