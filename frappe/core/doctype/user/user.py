@@ -580,7 +580,7 @@ def test_password_strength(new_password, key=None, old_password=None, user_data=
 
 	password_policy = frappe.db.get_value("System Settings", None,
 		["enable_password_policy", "minimum_password_score", "min_password_length",
-		 "include_symbols", "include_numbers", "include_lowercase_characters","include_uppercase_characters"], as_dict=True) or {}
+		 "include_symbols", "include_numbers", "include_lowercase_characters","include_uppercase_characters", "exclude_similar_characters","exclude_ambiguous_characters"], as_dict=True) or {}
 
 	enable_password_policy = cint(password_policy.get("enable_password_policy", 0))
 	minimum_password_score = cint(password_policy.get("minimum_password_score", 0))
@@ -589,6 +589,9 @@ def test_password_strength(new_password, key=None, old_password=None, user_data=
 	include_numbers = cint(password_policy.get("include_numbers", 0))
 	include_lowercase_characters = cint(password_policy.get("include_lowercase_characters", 0))
 	include_uppercase_characters = cint(password_policy.get("include_uppercase_characters", 0))
+	exclude_similar_characters = cint(password_policy.get("exclude_similar_characters", 0))
+	exclude_ambiguous_characters = cint(password_policy.get("exclude_ambiguous_characters", 0))
+
 
 
 	feedback ={
@@ -628,11 +631,30 @@ def test_password_strength(new_password, key=None, old_password=None, user_data=
 			return feedback
 
 		# searching for symbols
-		symbol_error = re.search(r"[ !#$%&'()*+,-./[\\\]^_`{|}~" + r'"]', password) is None
+		symbol_error = re.search(r"[ !#$%&*+-^_]", password) is None
 		if include_symbols and symbol_error:
 			feedback['feedback']['password_policy_validation_passed'] = False
 			feedback['feedback']['suggestions'].append(_("Password must contains at least one speical symbol"))
 			return feedback
+
+		exclude_ambiguous_error = re.search(r"['()/[\\\]`{|}~,;:.<>" + r'"]') is not None
+		if exclude_ambiguous_characters and exclude_ambiguous_error:
+			feedback['feedback']['password_policy_validation_passed'] = False
+			feedback['feedback']['suggestions'].append(_("Password must not contains ambiguous characters"))
+			return feedback
+
+		if exclude_similar_characters:
+			password_set = set(password)
+			similar_chars = {
+				'1':r"[lL!i|]",'l': r"[1L!i|]",'L': r"[1l!i|]",'!': r"[1lLi|]", 'i': r"[1lL!|]",'|': r"[1lL!i]",
+				'o':r"[O0]",'O':r"[o0]", '0':r"[oO]"
+			}
+
+			for c in similar_chars:
+				if c in password_set and re.search(similar_chars[c], password) is not None:
+					feedback['feedback']['password_policy_validation_passed'] = False
+					feedback['feedback']['suggestions'].append(_("Password must not contains similar characters"))
+					return feedback
 
 	return feedback
 
