@@ -637,7 +637,7 @@ def test_password_strength(new_password, key=None, old_password=None, user_data=
 			feedback['feedback']['suggestions'].append(_("Password must contains at least one speical symbol"))
 			return feedback
 
-		exclude_ambiguous_error = re.search(r"['()/[\\\]`{|}~,;:.<>" + r'"]') is not None
+		exclude_ambiguous_error = re.search(r"['()/[\\\]`{|}~,;:.<>" + r'"]', password) is not None
 		if exclude_ambiguous_characters and exclude_ambiguous_error:
 			feedback['feedback']['password_policy_validation_passed'] = False
 			feedback['feedback']['suggestions'].append(_("Password must not contains ambiguous characters"))
