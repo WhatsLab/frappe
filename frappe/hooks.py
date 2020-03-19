@@ -141,12 +141,12 @@ doc_events = {
 
 scheduler_events = {
 	"all": [
-		"frappe.email.queue.flush",
-		"frappe.email.doctype.email_account.email_account.pull",
-		"frappe.email.doctype.email_account.email_account.notify_unreplied",
+		# "frappe.email.queue.flush",
+		# "frappe.email.doctype.email_account.email_account.pull",
+		# "frappe.email.doctype.email_account.email_account.notify_unreplied",
 		"frappe.oauth.delete_oauth2_data",
 		"frappe.integrations.doctype.razorpay_settings.razorpay_settings.capture_payment",
-		"frappe.twofactor.delete_all_barcodes_for_users",
+		# "frappe.twofactor.delete_all_barcodes_for_users",
 		"frappe.website.doctype.web_page.web_page.check_publish_status",
 		'frappe.utils.global_search.sync_global_search'
 	],

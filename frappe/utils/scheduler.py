@@ -24,6 +24,7 @@ from frappe.core.doctype.user.user import STANDARD_USERS
 from frappe.installer import update_site_config
 from six import string_types
 from croniter import croniter
+import platform
 
 DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 
@@ -232,13 +233,17 @@ def is_scheduler_inactive():
 	return False
 
 def is_scheduler_disabled():
+	if not frappe.conf.constants.get("enable_scheduler_{0}".format(
+			platform.node().replace("-", "_")), True):
+		return True
 	if frappe.conf.disable_scheduler:
 		return True
 
 	return not frappe.utils.cint(frappe.db.get_single_value("System Settings", "enable_scheduler"))
 
 def toggle_scheduler(enable):
-	frappe.db.set_value("System Settings", None, "enable_scheduler", 1 if enable else 0)
+	frappe.db.set_value("System Settings", None, "enable_scheduler_{0}".format(
+			platform.node().replace("-", "_")), 1 if enable else 0)
 
 def enable_scheduler():
 	toggle_scheduler(True)
