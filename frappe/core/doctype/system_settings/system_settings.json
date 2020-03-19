@@ -48,6 +48,8 @@
   "include_numbers",
   "include_lowercase_characters",
   "include_uppercase_characters",
+  "exclude_similar_characters",
+  "exclude_ambiguous_characters",
   "minimum_password_score",
   "brute_force_security",
   "allow_consecutive_login_attempts",
@@ -477,11 +479,23 @@
    "fieldname": "include_uppercase_characters",
    "fieldtype": "Check",
    "label": "include uppercase characters \"( e.g. ABCDEFGH )\""
+  },
+  {
+   "default": "0",
+   "fieldname": "exclude_similar_characters",
+   "fieldtype": "Check",
+   "label": "exclude similar characters \"( e.g. i, l, 1, L, o, 0, O )\""
+  },
+  {
+   "default": "0",
+   "fieldname": "exclude_ambiguous_characters",
+   "fieldtype": "Check",
+   "label": "exclude ambiguous characters \"( { } [ ] ( ) / \\ ' \" ` ~ , ; : . < > )\"\n"
   }
  ],
  "icon": "fa fa-cog",
  "issingle": 1,
- "modified": "2020-03-18 14:17:09.486293",
+ "modified": "2020-03-18 18:17:09.486293",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "System Settings",
