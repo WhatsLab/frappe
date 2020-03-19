@@ -631,7 +631,7 @@ def test_password_strength(new_password, key=None, old_password=None, user_data=
 			return feedback
 
 		# searching for symbols
-		symbol_error = re.search(r"[ !#$%&*+-^_]", password) is None
+		symbol_error = re.search(r"[ !#$%&*+^_]", password) is None
 		if include_symbols and symbol_error:
 			feedback['feedback']['password_policy_validation_passed'] = False
 			feedback['feedback']['suggestions'].append(_("Password must contains at least one speical symbol"))
