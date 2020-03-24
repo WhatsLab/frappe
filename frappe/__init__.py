@@ -195,12 +195,25 @@ def connect_replica():
 	if local.conf.different_credentials_for_replica:
 		user = local.conf.replica_db_name
 		password = local.conf.replica_db_password
+	replica_host = get_replica_host()
 
-	local.replica_db = get_db(host=local.conf.replica_host, user=user, password=password)
+
+	local.replica_db = get_db(host=replica_host, user=user, password=password)
 
 	# swap db connections
 	local.primary_db = local.db
 	local.db = local.replica_db
+
+def get_replica_host():
+	if 'replica_host_count' in local.conf:
+		from frappe.utils import cint
+		from random import randint
+		count = cint(local.conf.replica_host_count)
+		inx = randint(1,count)
+		rep_key = "replica_host_{}".format(inx)
+		if rep_key in local.conf:
+			return local.conf[rep_key]
+	return local.conf.replica_host
 
 def get_site_config(sites_path=None, site_path=None):
 	"""Returns `site_config.json` combined with `sites/common_site_config.json`.
