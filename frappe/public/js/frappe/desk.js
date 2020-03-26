@@ -253,7 +253,7 @@ frappe.Application = Class.extend({
 		var me = this;
 
 		// refresh_notifications will be called only once during a 1 second window
-		this.refresh_notifications = frappe.utils.debounce(this.refresh_notifications.bind(this), 1000);
+		this.refresh_notifications = frappe.utils.debounce(this.refresh_notifications.bind(this), 1000000);
 
 		// kickoff
 		this.refresh_notifications();
