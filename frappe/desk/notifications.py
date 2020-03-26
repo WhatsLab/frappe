@@ -8,6 +8,8 @@ from frappe.utils import time_diff_in_seconds, now, now_datetime, DATETIME_FORMA
 from dateutil.relativedelta import relativedelta
 from six import string_types
 import json
+from datetime import datetime
+
 
 @frappe.whitelist()
 def get_notifications():
@@ -20,27 +22,36 @@ def get_notifications():
 			"targets": {},
 			"new_messages": []
 		}
+	def _get_notification():
+		config = get_notification_config()
 
-	config = get_notification_config()
+		groups = list(config.get("for_doctype")) + list(config.get("for_module"))
+		cache = frappe.cache()
 
-	groups = list(config.get("for_doctype")) + list(config.get("for_module"))
-	cache = frappe.cache()
+		notification_count = {}
+		notification_percent = {}
 
-	notification_count = {}
-	notification_percent = {}
+		for name in groups:
+			count = cache.hget("notification_count:" + name, frappe.session.user)
+			if count is not None:
+				notification_count[name] = count
 
-	for name in groups:
-		count = cache.hget("notification_count:" + name, frappe.session.user)
-		if count is not None:
-			notification_count[name] = count
+		return {
+			"open_count_doctype": get_notifications_for_doctypes(config, notification_count),
+			"open_count_module": get_notifications_for_modules(config, notification_count),
+			"open_count_other": get_notifications_for_other(config, notification_count),
+			"targets": get_notifications_for_targets(config, notification_percent),
+			"new_messages": get_new_messages()
+		}
+	return frappe.cache().get_value(
+		"desktop:get_notifications_{0}_{1}_{2}".format(
+			datetime.now().date(),
+			datetime.now().hour,
+			int(datetime.now().minute / 10)
+		),
+		_get_notification
+	)
 
-	return {
-		"open_count_doctype": get_notifications_for_doctypes(config, notification_count),
-		"open_count_module": get_notifications_for_modules(config, notification_count),
-		"open_count_other": get_notifications_for_other(config, notification_count),
-		"targets": get_notifications_for_targets(config, notification_percent),
-		"new_messages": get_new_messages()
-	}
 
 def get_new_messages():
 	last_update = frappe.cache().hget("notifications_last_update", frappe.session.user)
