@@ -199,6 +199,11 @@ def connect_replica():
 
 
 	local.replica_db = get_db(host=replica_host, user=user, password=password)
+	from pymysql.err import OperationalError
+	try:
+		local.replica_db.get_connection()
+	except OperationalError:
+		return
 
 	# swap db connections
 	local.primary_db = local.db
