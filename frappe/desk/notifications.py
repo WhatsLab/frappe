@@ -46,14 +46,15 @@ def get_notifications():
 			"targets": get_notifications_for_targets(config, notification_percent),
 			"new_messages": get_new_messages()
 		}
-	return frappe.cache().get_value(
-		"desktop:get_notifications_{0}_{1}_{2}".format(
-			datetime.now().date(),
-			datetime.now().hour,
-			int(datetime.now().minute / 10)
-		),
-		_get_notification
-	)
+	return _get_notification()
+# 	frappe.cache().get_value(
+# 		"desktop:get_notifications_{0}_{1}_{2}".format(
+# 			datetime.now().date(),
+# 			datetime.now().hour,
+# 			int(datetime.now().minute / 10)
+# 		),
+# 		_get_notification
+# 	)
 
 
 def get_new_messages():
