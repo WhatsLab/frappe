@@ -253,7 +253,7 @@ frappe.Application = Class.extend({
 		var me = this;
 
 		// refresh_notifications will be called only once during a 1 second window
-		this.refresh_notifications = frappe.utils.debounce(this.refresh_notifications.bind(this), 1000000);
+		this.refresh_notifications = frappe.utils.debounce(this.refresh_notifications.bind(this), 1000);
 
 		// kickoff
 		this.refresh_notifications();
@@ -277,23 +277,23 @@ frappe.Application = Class.extend({
 			if (this._refresh_notifications) {
 				this._refresh_notifications.abort();
 			}
-// 			this._refresh_notifications = frappe.call({
-// 				type: 'GET',
-// 				method: "frappe.desk.notifications.get_notifications",
-// 				callback: function(r) {
-// 					if(r.message) {
-// 						$.extend(frappe.boot.notification_info, r.message);
-// 						$(document).trigger("notification-update");
+			this._refresh_notifications = frappe.call({
+				type: 'GET',
+				method: "frappe.desk.notifications.get_notifications",
+				callback: function(r) {
+					if(r.message) {
+						$.extend(frappe.boot.notification_info, r.message);
+						$(document).trigger("notification-update");
 
-// 						if(frappe.get_route()[0] != "messages") {
-// 							if(r.message.new_messages.length) {
-// 								frappe.utils.set_title_prefix("(" + r.message.new_messages.length + ")");
-// 							}
-// 						}
-// 					}
-// 				},
-// 				freeze: false
-// 			});
+						if(frappe.get_route()[0] != "messages") {
+							if(r.message.new_messages.length) {
+								frappe.utils.set_title_prefix("(" + r.message.new_messages.length + ")");
+							}
+						}
+					}
+				},
+				freeze: false
+			});
 		}
 	},
 
