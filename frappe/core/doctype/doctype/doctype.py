@@ -278,8 +278,8 @@ class DocType(Document):
 			frappe.db.updatedb(self.name, self)
 		except Exception as e:
 			print("\n\nThere was an issue while migrating the DocType: {}\n".format(self.name))
-			raise e
-
+			#raise e
+			return
 		self.change_modified_of_parent()
 		make_module_and_roles(self)
 

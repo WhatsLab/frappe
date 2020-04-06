@@ -3,8 +3,9 @@ from __future__ import unicode_literals
 import frappe
 
 def execute():
-    frappe.reload_doctype("Comment")
 
+    frappe.reload_doctype("Comment")
+    return
     for comment in frappe.get_all('Communication', fields = ['*'],
         filters = dict(communication_type = 'Comment')):
 

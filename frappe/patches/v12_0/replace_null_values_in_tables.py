@@ -15,6 +15,7 @@ def execute():
 
 	for table in frappe.db.get_tables():
 		if update_column_table_map.get(table):
+		    try:
 			frappe.db.sql("""UPDATE `{table}` SET {columns}"""
 				.format(table=table, columns=", ".join(update_column_table_map.get(table))))
-
+		    except: pass
