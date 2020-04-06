@@ -82,7 +82,7 @@ class MariaDBDatabase(Database):
 		self.user = frappe.conf.db_name
 
 		if usessl:
-			conn = pymysql.connect(self.host, self.user or '', self.password or '',
+			conn = pymysql.connect(self.host, frappe.conf.db_user or self.user or '', self.password or '', database=frappe.conf.db_name,
 				port=self.port, charset='utf8mb4', use_unicode = True, ssl=ssl_params,
 				conv = conversions, local_infile = frappe.conf.local_infile)
 		else:
