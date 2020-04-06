@@ -93,7 +93,7 @@ class MariaDBDatabase(Database):
 		# # self._conn.set_server_option(MYSQL_OPTION_MULTI_STATEMENTS_OFF)
 
 		if self.user != 'root':
-			conn.select_db(frappe.conf.db_user or self.user)
+			conn.select_db(frappe.conf.db_name or self.user)
 
 		return conn
 
