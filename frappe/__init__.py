@@ -184,12 +184,12 @@ def connect(site=None, db_name=None):
 	if site:
 		init(site)
 
-	local.db = get_db(user=db_name or local.conf.db_name)
+	local.db = get_db(user=getattr(local.conf, 'db_user', '') or db_name or local.conf.db_name)
 	set_user("Administrator")
 
 def connect_replica():
 	from frappe.database import get_db
-	user = local.conf.db_name
+	user = getattr(local.conf, 'db_user', '') or local.conf.db_name
 	password = local.conf.db_password
 
 	if local.conf.different_credentials_for_replica:
