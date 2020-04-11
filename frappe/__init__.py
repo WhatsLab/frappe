@@ -286,7 +286,6 @@ def cache():
 	return redis_server
 
 
-redis_server = None
 def cache_apis():
 	"""Returns memcache connection."""
 	global api_redis_server
