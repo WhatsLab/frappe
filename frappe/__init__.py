@@ -274,6 +274,7 @@ def destroy():
 
 # memcache
 redis_server = None
+api_redis_server = None
 def cache():
 	"""Returns memcache connection."""
 	global redis_server
@@ -283,14 +284,14 @@ def cache():
 			or "redis://localhost:11311")
 	return redis_server
 
-
+# Wrapper redis for API caching only. seperated by the desk caching wrapper
 def cache_apis():
 	 """Returns memcache connection."""
-	 global redis_server
-	 if not redis_server:
+	 global api_redis_server
+	 if not api_redis_server:
 	 	from frappe.utils.redis_wrapper import RedisWrapper
-	 	redis_server = RedisWrapper.from_url(conf.get('redis_cache_api') or conf.get('redis_cache'))
-	 return redis_server
+	 	api_redis_server = RedisWrapper.from_url(conf.get('redis_cache_api') or conf.get('redis_cache'))
+	 return api_redis_server
 
 
 def get_traceback():
