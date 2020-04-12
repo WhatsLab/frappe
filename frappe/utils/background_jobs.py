@@ -17,7 +17,8 @@ queue_timeout = {
 	'long': 1500,
 	'default': 300,
 	'short': 300,
-	'firebase' : 300
+	'firebase_long' : 1500,
+	'firebase_short' : 300
 }
 
 redis_connection = None
