@@ -20,7 +20,7 @@ queue_timeout = {
 	'firebase_long' : 1500,
 	'firebase_short' : 300,
 	'auto_assign_short' : 300,
-	'auto_assign_long' : 1500و
+	'auto_assign_long' : 1500,
 	'third_party_sync_short' : 300,
 	'third_party_sync_long' : 1500
 }
