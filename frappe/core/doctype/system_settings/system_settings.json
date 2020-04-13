@@ -26,6 +26,11 @@
   "enable_scheduler_worker_3",
   "enable_scheduler_worker_4",
   "enable_scheduler_worker_5",
+  "enable_scheduler_worker_6",
+  "enable_scheduler_worker_7",
+  "enable_scheduler_worker_8",
+  "enable_scheduler_worker_9",
+  "enable_scheduler_worker_10",
   "scheduler_last_event",
   "permissions",
   "apply_strict_user_permissions",
@@ -219,6 +224,46 @@
    "fieldtype": "Check",
    "hidden": 0,
    "label": "Enable Scheduled Jobs on Worker-5"
+  },
+  {
+   "default": "0",
+   "description": "Run scheduled jobs only if checked",
+   "fieldname": "enable_scheduler_worker_6",
+   "fieldtype": "Check",
+   "hidden": 0,
+   "label": "Enable Scheduled Jobs on Worker-6"
+  },
+  {
+   "default": "0",
+   "description": "Run scheduled jobs only if checked",
+   "fieldname": "enable_scheduler_worker_7",
+   "fieldtype": "Check",
+   "hidden": 0,
+   "label": "Enable Scheduled Jobs on Worker-7"
+  },
+  {
+   "default": "0",
+   "description": "Run scheduled jobs only if checked",
+   "fieldname": "enable_scheduler_worker_8",
+   "fieldtype": "Check",
+   "hidden": 0,
+   "label": "Enable Scheduled Jobs on Worker-8"
+  },
+  {
+   "default": "0",
+   "description": "Run scheduled jobs only if checked",
+   "fieldname": "enable_scheduler_worker_9",
+   "fieldtype": "Check",
+   "hidden": 0,
+   "label": "Enable Scheduled Jobs on Worker-9"
+  },
+  {
+   "default": "0",
+   "description": "Run scheduled jobs only if checked",
+   "fieldname": "enable_scheduler_worker_10",
+   "fieldtype": "Check",
+   "hidden": 0,
+   "label": "Enable Scheduled Jobs on Worker-10"
   },
   {
    "fieldname": "scheduler_last_event",
@@ -495,7 +540,7 @@
  ],
  "icon": "fa fa-cog",
  "issingle": 1,
- "modified": "2020-03-18 18:17:09.486293",
+ "modified": "2020-04-013 18:17:09.486293",
  "modified_by": "Administrator",
  "module": "Core",
  "name": "System Settings",
