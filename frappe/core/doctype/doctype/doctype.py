@@ -981,8 +981,7 @@ def validate_permissions_for_doctype(doctype, for_remove=False):
 	# save permissions
 	for perm in doctype.get("permissions"):
 		perm.db_update()
-	# TODO: Stopped Temp
-	# clear_permissions_cache(doctype.name)
+	clear_permissions_cache(doctype.name)
 
 
 def clear_permissions_cache(doctype):
