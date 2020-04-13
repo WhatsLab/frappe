@@ -79,10 +79,10 @@ class MariaDBDatabase(Database):
 			conversions.update({
 				TimeDelta: conversions[binary_type]
 			})
-		self.user = frappe.conf.db_user
+		self.user = getattr(frappe.conf, "db_user", None) or frappe.conf.db_name
 
 		if usessl:
-			conn = pymysql.connect(self.host, frappe.conf.db_user or self.user or '', self.password or '', database=frappe.conf.db_name,
+			conn = pymysql.connect(self.host, getattr(frappe.conf, "db_user", None) or self.user or '', self.password or '', database=frappe.conf.db_name,
 				port=self.port, charset='utf8mb4', use_unicode = True, ssl=ssl_params,
 				conv = conversions, local_infile = frappe.conf.local_infile)
 		else:
