@@ -71,8 +71,13 @@ def get_permissions(doctype=None, role=None):
 
 @frappe.whitelist()
 def add(parent, role, permlevel):
-	frappe.only_for("System Manager")
-	add_permission(parent, role, permlevel)
+	from matajer import test_log
+	import traceback
+	try:
+		frappe.only_for("System Manager")
+		add_permission(parent, role, permlevel)
+	except:
+		test_log(traceback.format_exc())
 
 @frappe.whitelist()
 def update(doctype, role, permlevel, ptype, value=None):

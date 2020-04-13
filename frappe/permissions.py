@@ -471,27 +471,32 @@ def setup_custom_perms(parent):
 def add_permission(doctype, role, permlevel=0):
 	'''Add a new permission rule to the given doctype
 		for the given Role and Permission Level'''
-	from frappe.core.doctype.doctype.doctype import validate_permissions_for_doctype
-	setup_custom_perms(doctype)
+	from matajer import test_log
+	import traceback
+	try:
+		from frappe.core.doctype.doctype.doctype import validate_permissions_for_doctype
+		setup_custom_perms(doctype)
 
-	if frappe.db.get_value('Custom DocPerm', dict(parent=doctype, role=role,
-		permlevel=permlevel, if_owner=0)):
-		return
+		if frappe.db.get_value('Custom DocPerm', dict(parent=doctype, role=role,
+			permlevel=permlevel, if_owner=0)):
+			return
 
-	custom_docperm = frappe.get_doc({
-		"doctype":"Custom DocPerm",
-		"__islocal": 1,
-		"parent": doctype,
-		"parenttype": "DocType",
-		"parentfield": "permissions",
-		"role": role,
-		'read': 1,
-		"permlevel": permlevel,
-	})
+		custom_docperm = frappe.get_doc({
+			"doctype":"Custom DocPerm",
+			"__islocal": 1,
+			"parent": doctype,
+			"parenttype": "DocType",
+			"parentfield": "permissions",
+			"role": role,
+			'read': 1,
+			"permlevel": permlevel,
+		})
 
-	custom_docperm.save()
+		custom_docperm.save()
 
-	validate_permissions_for_doctype(doctype)
+		validate_permissions_for_doctype(doctype)
+	except:
+		test_log(traceback.format_exc())
 
 def copy_perms(parent):
 	'''Copy all DocPerm in to Custom DocPerm for the given document'''
