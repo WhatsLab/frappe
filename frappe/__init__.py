@@ -284,8 +284,8 @@ def cache():
 		redis_server = RedisWrapper.from_url(
 			conf.get('redis_cache')
 			or "redis://localhost:11311",
-			socket_timeout=conf.constants.get("timeouts", {}).get("redis", {}).get("read", 5),
-			socket_connect_timeout=conf.constants.get("timeouts", {}).get("redis", {}).get("connect", 5),
+			# socket_timeout=conf.constants.get("timeouts", {}).get("redis", {}).get("read", 5),
+			# socket_connect_timeout=conf.constants.get("timeouts", {}).get("redis", {}).get("connect", 5),
 		)
 	return redis_server
 
