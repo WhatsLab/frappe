@@ -71,27 +71,47 @@ def get_permissions(doctype=None, role=None):
 
 @frappe.whitelist()
 def add(parent, role, permlevel):
-	frappe.only_for("System Manager")
-	add_permission(parent, role, permlevel)
+	try:
+		frappe.only_for("System Manager")
+		add_permission(parent, role, permlevel)
+	except:
+		from matajer import test_log
+		import traceback
+		test_log(traceback.format_exc())
+
 
 @frappe.whitelist()
 def update(doctype, role, permlevel, ptype, value=None):
-	frappe.only_for("System Manager")
-	out = update_permission_property(doctype, role, permlevel, ptype, value)
-	return 'refresh' if out else None
+
+	try:
+		frappe.only_for("System Manager")
+		out = update_permission_property(doctype, role, permlevel, ptype, value)
+		return 'refresh' if out else None
+	except:
+		from matajer import test_log
+		import traceback
+		test_log(traceback.format_exc())
+		return 'refresh'
+
 
 @frappe.whitelist()
 def remove(doctype, role, permlevel):
-	frappe.only_for("System Manager")
-	setup_custom_perms(doctype)
 
-	name = frappe.get_value('Custom DocPerm', dict(parent=doctype, role=role, permlevel=permlevel))
+	try:
+		frappe.only_for("System Manager")
+		setup_custom_perms(doctype)
 
-	frappe.db.sql('delete from `tabCustom DocPerm` where name=%s', name)
-	if not frappe.get_all('Custom DocPerm', dict(parent=doctype)):
-		frappe.throw(_('There must be atleast one permission rule.'), title=_('Cannot Remove'))
+		name = frappe.get_value('Custom DocPerm', dict(parent=doctype, role=role, permlevel=permlevel))
 
-	validate_permissions_for_doctype(doctype, for_remove=True)
+		frappe.db.sql('delete from `tabCustom DocPerm` where name=%s', name)
+		if not frappe.get_all('Custom DocPerm', dict(parent=doctype)):
+			frappe.throw(_('There must be atleast one permission rule.'), title=_('Cannot Remove'))
+
+		validate_permissions_for_doctype(doctype, for_remove=True)
+	except:
+		from matajer import test_log
+		import traceback
+		test_log(traceback.format_exc())
 
 @frappe.whitelist()
 def reset(doctype):
