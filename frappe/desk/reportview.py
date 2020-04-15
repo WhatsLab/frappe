@@ -151,7 +151,7 @@ def export_query():
 				if "invoice" in temp:
 					from matajer import test_log
 					test_log("Long Query\nUser: {0}".format(frappe.auth.get_logged_user()) + str(form_params))
-					raise frappe.PermissionError(_("Please contact @Yaqin Shurrab immediately. Do not change the filters or the close the current Page"))
+					raise frappe.PermissionError(_("Please contact @Yaqin Shurrab immediately. Do not change the filters nor close the current Page"))
 	except: pass
 	################
 	ret = db_query.execute(**form_params)
