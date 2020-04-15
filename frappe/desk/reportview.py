@@ -143,8 +143,15 @@ def export_query():
 		form_params["filters"] = {"name": ("in", si)}
 		del form_params["selected_items"]
 
-
 	db_query = DatabaseQuery(doctype)
+	################
+	if "Invoice Agent Payments" in doctype:
+		for temp in form_params['fields']:
+			if "invoice" in temp:
+				from matajer import test_log
+				test_log("Long Query" + str(form_params))
+				raise frappe.PermissionError(_("Please contact @Yaqin Shurrab immediately. Do not change the filters or the close the current Page"))
+	################
 	ret = db_query.execute(**form_params)
 
 	if add_totals_row:
