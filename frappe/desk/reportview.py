@@ -145,12 +145,14 @@ def export_query():
 
 	db_query = DatabaseQuery(doctype)
 	################
-	if "Invoice Agent Payments" in doctype:
-		for temp in form_params['fields']:
-			if "invoice" in temp:
-				from matajer import test_log
-				test_log("Long Query" + str(form_params))
-				raise frappe.PermissionError(_("Please contact @Yaqin Shurrab immediately. Do not change the filters or the close the current Page"))
+	try:
+		if "Invoice Agent Payments" in doctype:
+			for temp in form_params['fields']:
+				if "invoice" in temp:
+					from matajer import test_log
+					test_log("Long Query\nUser: {0}".format(frappe.auth.get_logged_user()) + str(form_params))
+					raise frappe.PermissionError(_("Please contact @Yaqin Shurrab immediately. Do not change the filters or the close the current Page"))
+	except: pass
 	################
 	ret = db_query.execute(**form_params)
 

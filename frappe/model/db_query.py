@@ -126,6 +126,12 @@ class DatabaseQuery(object):
 		if self.return_query:
 			return query
 		else:
+			try:
+				if "(`tabinvoice`.parent = `tabInvoice Agent Payments`.name)" in query:
+					from matajer import test_log
+					test_log("Long Query\nUser: {0}".format(frappe.auth.get_logged_user()) + str(query))
+					raise frappe.PermissionError(_("Please contact @Yaqin Shurrab immediately. Do not change the filters or the close the current Page"))
+			except: pass
 			return frappe.db.sql(query, as_dict=not self.as_list, debug=self.debug, update=self.update)
 
 	def prepare_args(self):
