@@ -71,27 +71,30 @@ frappe.RoleEditor = Class.extend({
 	show: function() {
 		var me = this;
 		$('.box').attr('disabled', this.disable);
-
-		// uncheck all roles
-		$(this.wrapper).find('input[type="checkbox"]')
-			.each(function(i, checkbox) {
-				checkbox.checked = false;
-			});
-
-		// set user roles as checked
 		let has_escalate_role = frappe.user.has_role('Escalate Role');
 		let user_roles = frappe.user_roles;
 		console.log("roles_editors built");
 		console.log(has_escalate_role);
 		console.log(user_roles);
+		// uncheck all roles
+		$(this.wrapper).find('input[type="checkbox"]')
+			.each(function(i, checkbox) {
+				console.log("ccccccc");
+				console.log(checkbox);
+
+				checkbox.checked = false;
+			});
+
+		// set user roles as checked
+
 		$.each((me.frm.doc.roles || []), function(i, user_role) {
 			var checkbox = $(me.wrapper)
 				.find('[data-user-role="'+user_role.role+'"] input[type="checkbox"]').get(0);
 			if(checkbox) checkbox.checked = true;
-			if (has_escalate_role && user_roles.includes(user_role.role)) {
-				console.log(user_role.role);
-				checkbox.attr('disabled', true);
-			}
+			// if (has_escalate_role && user_roles.includes(user_role.role)) {
+			// 	console.log(user_role.role);
+			// 	checkbox.attr('disabled', true);
+			// }
 		});
 
 		this.set_enable_disable();
