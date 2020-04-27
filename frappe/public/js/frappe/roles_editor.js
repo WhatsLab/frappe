@@ -89,7 +89,8 @@ frappe.RoleEditor = Class.extend({
 				.find('[data-user-role="'+user_role.role+'"] input[type="checkbox"]').get(0);
 			if(checkbox) checkbox.checked = true;
 			if (has_escalate_role && user_roles.includes(user_role.role)) {
-				checkbox.disabled = true;
+				console.log(user_role.role);
+				checkbox.disable();
 			}
 		});
 
