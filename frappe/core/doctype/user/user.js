@@ -40,7 +40,7 @@ frappe.ui.form.on('User', {
 	onload: function(frm) {
 		frm.can_edit_roles = has_access_to_edit_user();
 
-		console.log(can_edit_roles);
+		console.log(frm.can_edit_roles);
 		console.log("**%%&&***##%%@@$$");
 
 		if(frm.can_edit_roles && !frm.is_new()) {
