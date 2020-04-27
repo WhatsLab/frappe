@@ -77,23 +77,25 @@ frappe.RoleEditor = Class.extend({
 		console.log(has_escalate_role);
 		console.log(user_roles);
 		// uncheck all roles
-		$(this.wrapper).find('input[type="checkbox"]')
-			.each(function(i, checkbox) {
-				console.log("ccccccc");
-				console.log(checkbox);
-				console.log(i);
-				checkbox.disabled = true;
-				checkbox.checked = false;
-			});
+		$(this.wrapper).find('[data-user-role]').each(function() {
+			if($(this).find('input[type="checkbox"]').length) {
+				let user_role_x = $(this).attr('data-user-role');
+				console.log("iterate roles..");
+				console.log(user_role_x);
 
-		$.each((user_roles || []), function(i, user_role) {
-			var checkbox = $(me.wrapper)
-				.find('[data-user-role="'+user_role+'"] input[type="checkbox"]').get(0);
-			if(checkbox) {
-				console.log("bbbbbbbbbbbb");
-				console.log(user_role);
-				checkbox.disabled = true;
+				let checkbox = $(me.wrapper).find('[data-user-role="' + user_role_x + '"] input[type="checkbox"]').get(0);
+				if (checkbox) checkbox.disabled = !(user_roles.includes(user_role_x));
 			}
+		});
+
+		// $.each((user_roles || []), function(i, user_role) {
+		// 	var checkbox = $(me.wrapper)
+		// 		.find('[data-user-role="'+user_role+'"] input[type="checkbox"]').get(0);
+		// 	if(checkbox) {
+		// 		console.log("bbbbbbbbbbbb");
+		// 		console.log(user_role);
+		// 		checkbox.disabled = true;
+		// 	}
 
 		});
 
