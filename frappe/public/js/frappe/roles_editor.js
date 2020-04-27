@@ -67,16 +67,16 @@ frappe.RoleEditor = Class.extend({
 			console.log(frappe.user.has_role('Escalate Role'));
 			console.log(repl('<div class="user-role" \
 				data-user-role="%(role_value)s">\
-				<input type="checkbox" style="margin-top:0px;" class="box"> \
-				<a href="#" class="grey role" %(is_disabled)s>%(role_display)s</a>\
+				<input type="checkbox" style="margin-top:0px;" class="box" %(is_disabled)s> \
+				<a href="#" class="grey role">%(role_display)s</a>\
 			</div>', {
 				role_value: role,
 				role_display:__(role),
 				is_disabled: (frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes(role)) ? 'disabled': ''}));
 			$(me.wrapper).append(repl('<div class="user-role" \
 				data-user-role="%(role_value)s">\
-				<input type="checkbox" style="margin-top:0px;" class="box"> \
-				<a href="#" class="grey role" %(is_disabled)s>%(role_display)s</a>\
+				<input type="checkbox" style="margin-top:0px;" class="box" %(is_disabled)s> \
+				<a href="#" class="grey role">%(role_display)s</a>\
 			</div>', {
 				role_value: role,
 				role_display:__(role),
