@@ -81,6 +81,7 @@ frappe.RoleEditor = Class.extend({
 		// set user roles as checked
 		let has_escalate_role = frappe.user.has_role('Escalate Role');
 		let user_roles = frappe.user_roles;
+		console.log("roles_editors built");
 		console.log(has_escalate_role);
 		console.log(user_roles);
 		$.each((me.frm.doc.roles || []), function(i, user_role) {
