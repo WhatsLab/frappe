@@ -29,21 +29,25 @@ frappe.RoleEditor = Class.extend({
 			role_toolbar.find(".btn-add")
 				.html(__('Add all roles'))
 				.on("click", function() {
-					$(me.wrapper).find('input[type="checkbox"]').each(function(i, check) {
-						if (!$(check).is(":checked")) {
-							check.checked = true;
-						}
-					});
+					if (!frappe.user.has_role('Escalate Role')) {
+						$(me.wrapper).find('input[type="checkbox"]').each(function (i, check) {
+							if (!$(check).is(":checked")) {
+								check.checked = true;
+							}
+						});
+					}
 				});
 
 			role_toolbar.find(".btn-remove")
 				.html(__('Clear all roles'))
 				.on("click", function() {
-					$(me.wrapper).find('input[type="checkbox"]').each(function(i, check) {
-						if($(check).is(":checked")) {
-							check.checked = false;
-						}
-					});
+					if (!frappe.user.has_role('Escalate Role')) {
+						$(me.wrapper).find('input[type="checkbox"]').each(function (i, check) {
+							if ($(check).is(":checked")) {
+								check.checked = false;
+							}
+						});
+					}
 				});
 		}
 
@@ -75,10 +79,17 @@ frappe.RoleEditor = Class.extend({
 			});
 
 		// set user roles as checked
+		let has_escalate_role = frappe.user.has_role('Escalate Role');
+		let user_roles = frappe.user_roles;
+		console.log(has_escalate_role);
+		console.log(user_roles);
 		$.each((me.frm.doc.roles || []), function(i, user_role) {
 			var checkbox = $(me.wrapper)
 				.find('[data-user-role="'+user_role.role+'"] input[type="checkbox"]').get(0);
 			if(checkbox) checkbox.checked = true;
+			if (has_escalate_role && user_roles.includes(user_role.role)) {
+				checkbox.disabled = true;
+			}
 		});
 
 		this.set_enable_disable();
