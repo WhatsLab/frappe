@@ -40,7 +40,12 @@ frappe.ui.form.on('User', {
 	onload: function(frm) {
 		frm.can_edit_roles = has_access_to_edit_user();
 
+		console.log(can_edit_roles);
+		console.log("**%%&&***##%%@@$$");
+
 		if(frm.can_edit_roles && !frm.is_new()) {
+			console.log("editor start");
+
 			if(!frm.roles_editor) {
 				var role_area = $('<div style="min-height: 300px">')
 					.appendTo(frm.fields_dict.roles_html.wrapper);
@@ -156,6 +161,8 @@ frappe.ui.form.on('User', {
 			frm.toggle_display(['sb1', 'sb3', 'modules_access'], doc.enabled);
 			frm.set_df_property('enabled', 'read_only', 0);
 		}
+
+
 
 		if(frappe.session.user!=="Administrator") {
 			frm.toggle_enable('email', frm.is_new());
