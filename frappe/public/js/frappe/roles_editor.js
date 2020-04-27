@@ -98,7 +98,7 @@ frappe.RoleEditor = Class.extend({
 		// 		checkbox.disabled = true;
 		// 	}
 
-		});
+		// });
 
 		// set user roles as checked
 
