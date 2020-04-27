@@ -18,6 +18,17 @@ frappe.RoleEditor = Class.extend({
 				}
 			}
 		});
+		$(this.wrapper).find('[data-user-role]').each(function() {
+			if($(this).find('input[type="checkbox"]').length) {
+				let user_role_x = $(this).attr('data-user-role');
+				console.log("iterate roles..");
+				let checkbox = $(me.wrapper).find('[data-user-role="' + user_role_x + '"] input[type="checkbox"]').get(0);
+				if (checkbox) {
+					console.log(user_role_x + " " + !(user_roles.includes(user_role_x)));
+					checkbox.disabled = !(user_roles.includes(user_role_x));
+				}
+			}
+		});
 	},
 	show_roles: function() {
 		var me = this;
