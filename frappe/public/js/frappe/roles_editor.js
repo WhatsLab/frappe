@@ -90,10 +90,6 @@ frappe.RoleEditor = Class.extend({
 			var checkbox = $(me.wrapper)
 				.find('[data-user-role="'+user_role+'"] input[type="checkbox"]').get(0);
 			if(checkbox) checkbox.disabled = true;
-			// if (has_escalate_role && user_roles.includes(user_role.role)) {
-			// 	console.log(user_role.role);
-			// 	checkbox.attr('disabled', true);
-			// }
 		});
 
 		// set user roles as checked
