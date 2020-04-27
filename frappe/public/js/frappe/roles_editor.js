@@ -72,7 +72,7 @@ frappe.RoleEditor = Class.extend({
 			</div>', {
 				role_value: role,
 				role_display:__(role),
-				is_disabled: (frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes(role)) ? 'disabled': ''}));
+				is_disabled: (frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes(role)) ? 'disabled="disabled"': ''}));
 			$(me.wrapper).append(repl('<div class="user-role" \
 				data-user-role="%(role_value)s">\
 				<input type="checkbox" style="margin-top:0px;" class="box" %(is_disabled)s> \
@@ -80,7 +80,7 @@ frappe.RoleEditor = Class.extend({
 			</div>', {
 				role_value: role,
 				role_display:__(role),
-				is_disabled: (frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes(role)) ? 'disabled': ''}));
+				is_disabled: (frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes(role)) ? 'disabled="disabled"': ''}));
 		});
 
 		$(this.wrapper).find('input[type="checkbox"]').change(function() {
@@ -94,6 +94,7 @@ frappe.RoleEditor = Class.extend({
 	},
 	show: function() {
 		var me = this;
+		console.log(me);
 		$('.box').attr('disabled', this.disable);
 
 		// uncheck all roles
@@ -112,7 +113,7 @@ frappe.RoleEditor = Class.extend({
 		this.set_enable_disable();
 	},
 	set_enable_disable: function() {
-		$('.box').attr('disabled', this.disable ? true : false);
+		// $('.box').attr('disabled', this.disable ? true : false);
 	},
 	set_roles_in_table: function() {
 		var opts = this.get_roles();
