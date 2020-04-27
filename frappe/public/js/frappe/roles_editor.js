@@ -81,9 +81,20 @@ frappe.RoleEditor = Class.extend({
 			.each(function(i, checkbox) {
 				console.log("ccccccc");
 				console.log(checkbox);
-
+				console.log(i);
+				checkbox.disabled = true;
 				checkbox.checked = false;
 			});
+
+		$.each((user_roles || []), function(i, user_role) {
+			var checkbox = $(me.wrapper)
+				.find('[data-user-role="'+user_role+'"] input[type="checkbox"]').get(0);
+			if(checkbox) checkbox.disabled = true;
+			// if (has_escalate_role && user_roles.includes(user_role.role)) {
+			// 	console.log(user_role.role);
+			// 	checkbox.attr('disabled', true);
+			// }
+		});
 
 		// set user roles as checked
 
@@ -140,6 +151,8 @@ frappe.RoleEditor = Class.extend({
 				unchecked_roles.push($(this).attr('data-user-role'));
 			}
 		});
+		console.log("vvvvvv");
+		console.log(checked_roles);
 
 		return {
 			checked_roles: checked_roles,
