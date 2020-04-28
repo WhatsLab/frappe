@@ -154,13 +154,17 @@ frappe.RoleEditor = Class.extend({
 			existing_role_list.push(user_role.role);
 		});
 		console.log("roles......");
-		console.log(existing_role_list) || [];
+		console.log(existing_role_list || []);
 
 		$(this.wrapper).find('[data-user-role]').each(function() {
 			if($(this).find('input[type="checkbox"]:checked').length) {
 				if (frappe.user.has_role('Escalate Role') &&
 					!frappe.user_roles.includes($(this).attr('data-user-role') &&
 						!existing_role_list.includes($(this).attr('data-user-role')))) {
+					console.log(frappe.user_roles);
+					console.log((frappe.user.has_role('Escalate Role') &&
+						!frappe.user_roles.includes($(this).attr('data-user-role') &&
+							!existing_role_list.includes($(this).attr('data-user-role')))));
 					console.log("NOT PERMITTED");
 					console.log($(this).attr('data-user-role'));
 					// $(this.wrapper).find('[data-user-role="'+ $(this).attr('data-user-role') +'"] input[type="checkbox"]').get(0).checked = false;
