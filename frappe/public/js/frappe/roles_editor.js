@@ -50,6 +50,31 @@ frappe.RoleEditor = Class.extend({
 					}
 				});
 		}
+		$.each(this.roles, function(i, role) {
+			// console.log("iterate roles html");
+			// if (has_escalate_role) {
+			// 	let is_disabled = 'disabled';
+			// 	console.log(role + " " + !(user_roles.includes(role)));
+			// 	if ((user_roles.includes(role))) {
+			// 		is_disabled = ''
+			// 	}
+			// }
+			// else {
+			// 	let is_disabled = '';
+			// }
+			console.log(role);
+			console.log((frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes(role)) ? 'disabled': '');
+			console.log(frappe.user.has_role('Escalate Role'));
+			$(me.wrapper).append(repl('<div class="user-role" \
+				data-user-role="%(role_value)s">\
+				<input type="checkbox" style="margin-top:0px;" class="box" %(is_disabled)s> \
+				<a href="#" class="grey role">%(role_display)s</a>\
+			</div>', {
+				role_value: role,
+				role_display:__(role),
+				// is_disabled: ''
+				is_disabled: (frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes(role)) ? 'disabled="disabled"': ''}));
+		});
 
 		$(this.wrapper).find('input[type="checkbox"]').change(function() {
 			me.set_roles_in_table();
@@ -81,46 +106,24 @@ frappe.RoleEditor = Class.extend({
 		this.set_enable_disable();
 	},
 	set_enable_disable: function() {
+		$('.box').attr('disabled', this.disable ? true : false);
 		if (frappe.user.has_role('Escalate Role')) {
-			$('.box').attr('disabled', true);
-			$.each(this.roles, function (i, role) {
-				console.log("iterate roles html");
-				// if (has_escalate_role) {
-				// 	let is_disabled = 'disabled';
-				// 	console.log(role + " " + !(user_roles.includes(role)));
-				// 	if ((user_roles.includes(role))) {
-				// 		is_disabled = ''
-				// 	}
-				// }
-				// else {
-				// 	let is_disabled = '';
-				// }
-				console.log(role);
-				console.log((frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes(role)) ? 'disabled' : '');
-				console.log(repl('<div class="user-role" \
-				data-user-role="%(role_value)s">\
-				<input type="checkbox" style="margin-top:0px;" class="box" %(is_disabled)s> \
-				<a href="#" class="grey role">%(role_display)s</a>\
-			</div>', {
-					role_value: role,
-					role_display: __(role),
-					is_disabled: (!frappe.user_roles.includes(role)) ? 'disabled="disabled"' : ''
-				}));
-				$(this.wrapper).append(repl('<div class="user-role" \
-				data-user-role="%(role_value)s">\
-				<input type="checkbox" style="margin-top:0px;" class="box" %(is_disabled)s> \
-				<a href="#" class="grey role">%(role_display)s</a>\
-			</div>', {
-					role_value: role,
-					role_display: __(role),
-					// is_disabled: ''
-					is_disabled: (!frappe.user_roles.includes(role)) ? 'disabled="disabled"': ''
-				}));
+			$.each(this.roles, function(i, role) {
+				console.log("iterate roles html permissions...");
+
+				let checkbox = $(this.wrapper).find('[data-user-role="' + role + '"] input[type="box"]').get(0);
+				console.log(checkbox);
+
+				console.log(role + " " + (!frappe.user_roles.includes(role).includes(role)));
+				if (frappe.user_roles.includes(role)) {
+					checkbox.attr('disabled', false);
+				} else {
+					checkbox.attr('disabled', true);
+				}
 			});
 		}
-		else {
-			$('.box').attr('disabled', this.disable ? true : false);
-		}
+
+
 	},
 	set_roles_in_table: function() {
 		var opts = this.get_roles();
