@@ -152,7 +152,7 @@ frappe.RoleEditor = Class.extend({
 			if($(this).find('input[type="checkbox"]:checked').length) {
 				if (frappe.user.has_role('Escalate Role') &&
 					!frappe.user_roles.includes($(this).attr('data-user-role') &&
-						!(this.frm.doc.roles || []).includes($(this).attr('data-user-role')) {
+						!(this.frm.doc.roles || []).includes($(this).attr('data-user-role')))) {
 					console.log("NOT PERMITTED");
 					console.log($(this).attr('data-user-role'));
 					$(this).find('[data-user-role="'+ $(this).attr('data-user-role') +'"] input[type="checkbox"]').get(0).checked = false;
