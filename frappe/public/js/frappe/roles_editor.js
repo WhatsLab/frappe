@@ -52,9 +52,6 @@ frappe.RoleEditor = Class.extend({
 		}
 		$.each(this.roles, function(i, role) {
 
-			console.log(role);
-			console.log((frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes(role)) ? 'disabled': '');
-			console.log(frappe.user.has_role('Escalate Role'));
 			$(me.wrapper).append(repl('<div class="user-role" \
 				data-user-role="%(role_value)s">\
 				<input type="checkbox" style="margin-top:0px;" class="box" %(is_disabled)s> \
@@ -77,7 +74,6 @@ frappe.RoleEditor = Class.extend({
 	},
 	show: function() {
 		var me = this;
-		console.log(me);
 		$('.box').attr('disabled', this.disable);
 
 		// uncheck all roles
@@ -97,25 +93,6 @@ frappe.RoleEditor = Class.extend({
 	},
 	set_enable_disable: function() {
 		$('.box').attr('disabled', this.disable ? true : false);
-		if (frappe.user.has_role('Escalate Role')) {
-			$.each(this.roles, function(i, role) {
-				console.log("iterate roles html permissions...");
-
-				let checkbox = $(this.wrapper).find('[data-user-role="' + role + '"] input[type="checkbox"]').get(0);
-				console.log(checkbox);
-
-				console.log(role + " " + (!frappe.user_roles.includes(role)));
-				if (checkbox) {
-					if (frappe.user_roles.includes(role)) {
-						checkbox.attr('disabled', false);
-					} else {
-						checkbox.attr('disabled', true);
-					}
-				}
-			});
-		}
-
-
 	},
 	set_roles_in_table: function() {
 		var opts = this.get_roles();
@@ -153,26 +130,13 @@ frappe.RoleEditor = Class.extend({
 		$.each((cur_frm.doc.roles || []), function(i, user_role) {
 			existing_role_list.push(user_role.role);
 		});
-		console.log("roles......");
-		console.log(existing_role_list || []);
-
 		$(this.wrapper).find('[data-user-role]').each(function() {
 			if($(this).find('input[type="checkbox"]:checked').length) {
-				// console.log(!frappe.user_roles.includes($(this).attr('data-user-role')));
-				// console.log(frappe.user.has_role('Escalate Role'));
-				// console.log(!existing_role_list.includes($(this).attr('data-user-role')));
 
 				if (frappe.user.has_role('Escalate Role') &&
 					(!frappe.user_roles.includes($(this).attr('data-user-role')) &&
 						(!existing_role_list.includes($(this).attr('data-user-role'))))) {
-					// console.log(frappe.user_roles);
-					// console.log((frappe.user.has_role('Escalate Role') &&
-					// 	!frappe.user_roles.includes($(this).attr('data-user-role') &&
-					// 		!existing_role_list.includes($(this).attr('data-user-role')))));
-					console.log("NOT PERMITTED");
-					console.log($(this).attr('data-user-role'));
-					// $(this.wrapper).find('[data-user-role="'+ $(this).attr('data-user-role') +'"] input[type="checkbox"]').get(0).checked = false;
-					window.alert('You do not have  permission to add  this role');
+					window.alert('You do not have  permission to add  this role: ' + $(this).attr('data-user-role'));
 					unchecked_roles.push($(this).attr('data-user-role'));
 				}
 				else {
@@ -183,9 +147,7 @@ frappe.RoleEditor = Class.extend({
 					&& (!frappe.user_roles.includes($(this).attr('data-user-role')))
 					&& existing_role_list.includes($(this).attr('data-user-role'))
 				) {
-					console.log("NOT PERMITTED");
-					console.log($(this).attr('data-user-role'));
-					window.alert('You do not have  permission to remove  this role');
+					window.alert('You do not have  permission to remove  this role' + $(this).attr('data-user-role'));
 					// $(this.wrapper).find('[data-user-role="'+ $(this).attr('data-user-role') +'"] input[type="checkbox"]').get(0).checked = true;
 					checked_roles.push($(this).attr('data-user-role'));
 				}
@@ -195,8 +157,6 @@ frappe.RoleEditor = Class.extend({
 				}
 			}
 		});
-		console.log("vvvvvv");
-		console.log(checked_roles);
 
 		return {
 			checked_roles: checked_roles,
