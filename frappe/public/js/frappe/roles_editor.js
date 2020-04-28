@@ -51,17 +51,7 @@ frappe.RoleEditor = Class.extend({
 				});
 		}
 		$.each(this.roles, function(i, role) {
-			// console.log("iterate roles html");
-			// if (has_escalate_role) {
-			// 	let is_disabled = 'disabled';
-			// 	console.log(role + " " + !(user_roles.includes(role)));
-			// 	if ((user_roles.includes(role))) {
-			// 		is_disabled = ''
-			// 	}
-			// }
-			// else {
-			// 	let is_disabled = '';
-			// }
+
 			console.log(role);
 			console.log((frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes(role)) ? 'disabled': '');
 			console.log(frappe.user.has_role('Escalate Role'));
@@ -160,7 +150,12 @@ frappe.RoleEditor = Class.extend({
 		var unchecked_roles = [];
 		$(this.wrapper).find('[data-user-role]').each(function() {
 			if($(this).find('input[type="checkbox"]:checked').length) {
-				checked_roles.push($(this).attr('data-user-role'));
+				if (frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes($(this).attr('data-user-role'))) {
+					console.log("NOT PERMITTED")
+				}
+				else {
+					checked_roles.push($(this).attr('data-user-role'));
+				}
 			} else {
 				unchecked_roles.push($(this).attr('data-user-role'));
 			}
