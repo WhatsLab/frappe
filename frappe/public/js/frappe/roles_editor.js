@@ -111,14 +111,16 @@ frappe.RoleEditor = Class.extend({
 			$.each(this.roles, function(i, role) {
 				console.log("iterate roles html permissions...");
 
-				let checkbox = $(this.wrapper).find('[data-user-role="' + role + '"] input[type="box"]').get(0);
+				let checkbox = $(this.wrapper).find('[data-user-role="' + role + '"] input[type="checkbox"]').get(0);
 				console.log(checkbox);
 
 				console.log(role + " " + (!frappe.user_roles.includes(role)));
-				if (frappe.user_roles.includes(role)) {
-					checkbox.attr('disabled', false);
-				} else {
-					checkbox.attr('disabled', true);
+				if (checkbox) {
+					if (frappe.user_roles.includes(role)) {
+						checkbox.attr('disabled', false);
+					} else {
+						checkbox.attr('disabled', true);
+					}
 				}
 			});
 		}
