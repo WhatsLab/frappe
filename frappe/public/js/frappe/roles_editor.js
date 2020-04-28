@@ -150,10 +150,13 @@ frappe.RoleEditor = Class.extend({
 		var unchecked_roles = [];
 		$(this.wrapper).find('[data-user-role]').each(function() {
 			if($(this).find('input[type="checkbox"]:checked').length) {
-				if (frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes($(this).attr('data-user-role'))) {
+				if (frappe.user.has_role('Escalate Role') &&
+					!frappe.user_roles.includes($(this).attr('data-user-role') &&
+						!(this.frm.doc.roles || []).includes($(this).attr('data-user-role')) {
 					console.log("NOT PERMITTED");
 					console.log($(this).attr('data-user-role'));
-					window.alert('You do not have  permission to add  this role');
+					$(this).find('[data-user-role="'+ $(this).attr('data-user-role') +'"] input[type="checkbox"]').get(0).checked = false;
+					// window.alert('You do not have  permission to add  this role');
 					unchecked_roles.push($(this).attr('data-user-role'));
 				}
 				else {
