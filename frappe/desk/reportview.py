@@ -152,7 +152,8 @@ def export_query():
 					from matajer import test_log
 					test_log("Long Query\nUser: {0}".format(frappe.auth.get_logged_user()) + str(form_params))
 					raise frappe.PermissionError(_("Please contact @Yaqin Shurrab immediately. Do not change the filters nor close the current Page"))
-	except: pass
+	except frappe.PermissionError as e: raise e
+	else: pass
 	################
 	ret = db_query.execute(**form_params)
 

@@ -131,7 +131,8 @@ class DatabaseQuery(object):
 					from matajer import test_log
 					test_log("Long Query\nUser: {0}".format(frappe.auth.get_logged_user()) + str(query))
 					raise frappe.PermissionError(_("Please contact @Yaqin Shurrab immediately. Do not change the filters nor close the current Page"))
-			except: pass
+			except frappe.PermissionError as e: raise e
+			else: pass
 			return frappe.db.sql(query, as_dict=not self.as_list, debug=self.debug, update=self.update)
 
 	def prepare_args(self):
