@@ -158,41 +158,41 @@ frappe.RoleEditor = Class.extend({
 
 		$(this.wrapper).find('[data-user-role]').each(function() {
 			if($(this).find('input[type="checkbox"]:checked').length) {
-				console.log(!frappe.user_roles.includes($(this).attr('data-user-role')));
-				console.log(frappe.user.has_role('Escalate Role'));
-				console.log(!existing_role_list.includes($(this).attr('data-user-role')));
+				// console.log(!frappe.user_roles.includes($(this).attr('data-user-role')));
+				// console.log(frappe.user.has_role('Escalate Role'));
+				// console.log(!existing_role_list.includes($(this).attr('data-user-role')));
 
 				if (frappe.user.has_role('Escalate Role') &&
 					(!frappe.user_roles.includes($(this).attr('data-user-role')) &&
 						(!existing_role_list.includes($(this).attr('data-user-role'))))) {
-					console.log(frappe.user_roles);
-					console.log((frappe.user.has_role('Escalate Role') &&
-						!frappe.user_roles.includes($(this).attr('data-user-role') &&
-							!existing_role_list.includes($(this).attr('data-user-role')))));
+					// console.log(frappe.user_roles);
+					// console.log((frappe.user.has_role('Escalate Role') &&
+					// 	!frappe.user_roles.includes($(this).attr('data-user-role') &&
+					// 		!existing_role_list.includes($(this).attr('data-user-role')))));
 					console.log("NOT PERMITTED");
 					console.log($(this).attr('data-user-role'));
 					// $(this.wrapper).find('[data-user-role="'+ $(this).attr('data-user-role') +'"] input[type="checkbox"]').get(0).checked = false;
-					// window.alert('You do not have  permission to add  this role');
+					window.alert('You do not have  permission to add  this role');
 					unchecked_roles.push($(this).attr('data-user-role'));
 				}
 				else {
 					checked_roles.push($(this).attr('data-user-role'));
 				}
 			} else {
-				// if (frappe.user.has_role('Escalate Role')
-				// 	&& !frappe.user_roles.includes($(this).attr('data-user-role'))
-				// 	&& existing_role_list.includes($(this).attr('data-user-role'))
-				// ) {
-				// 	console.log("NOT PERMITTED");
-				// 	console.log($(this).attr('data-user-role'));
-				// 	// window.alert('You do not have  permission to remove  this role');
-				// 	// $(this.wrapper).find('[data-user-role="'+ $(this).attr('data-user-role') +'"] input[type="checkbox"]').get(0).checked = true;
-				// 	checked_roles.push($(this).attr('data-user-role'));
-				// }
-				// else
-				// {
+				if (frappe.user.has_role('Escalate Role')
+					&& (!frappe.user_roles.includes($(this).attr('data-user-role')))
+					&& existing_role_list.includes($(this).attr('data-user-role'))
+				) {
+					console.log("NOT PERMITTED");
+					console.log($(this).attr('data-user-role'));
+					window.alert('You do not have  permission to remove  this role');
+					// $(this.wrapper).find('[data-user-role="'+ $(this).attr('data-user-role') +'"] input[type="checkbox"]').get(0).checked = true;
+					checked_roles.push($(this).attr('data-user-role'));
+				}
+				else
+				{
 					unchecked_roles.push($(this).attr('data-user-role'));
-				// }
+				}
 			}
 		});
 		console.log("vvvvvv");
