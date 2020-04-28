@@ -81,7 +81,7 @@ frappe.RoleEditor = Class.extend({
 		this.set_enable_disable();
 	},
 	set_enable_disable: function() {
-		if (has_escalate_role) {
+		if (frappe.user.has_role('Escalate Role')) {
 			$('.box').attr('disabled', true);
 			$.each(this.roles, function (i, role) {
 				console.log("iterate roles html");
@@ -97,7 +97,6 @@ frappe.RoleEditor = Class.extend({
 				// }
 				console.log(role);
 				console.log((frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes(role)) ? 'disabled' : '');
-				console.log(frappe.user.has_role('Escalate Role'));
 				console.log(repl('<div class="user-role" \
 				data-user-role="%(role_value)s">\
 				<input type="checkbox" style="margin-top:0px;" class="box" %(is_disabled)s> \
@@ -105,7 +104,7 @@ frappe.RoleEditor = Class.extend({
 			</div>', {
 					role_value: role,
 					role_display: __(role),
-					is_disabled: (frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes(role)) ? 'disabled="disabled"' : ''
+					is_disabled: (!frappe.user_roles.includes(role)) ? 'disabled="disabled"' : ''
 				}));
 				$(me.wrapper).append(repl('<div class="user-role" \
 				data-user-role="%(role_value)s">\
