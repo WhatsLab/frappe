@@ -114,7 +114,7 @@ frappe.RoleEditor = Class.extend({
 				let checkbox = $(this.wrapper).find('[data-user-role="' + role + '"] input[type="box"]').get(0);
 				console.log(checkbox);
 
-				console.log(role + " " + (!frappe.user_roles.includes(role).includes(role)));
+				console.log(role + " " + (!frappe.user_roles.includes(role)));
 				if (frappe.user_roles.includes(role)) {
 					checkbox.attr('disabled', false);
 				} else {
