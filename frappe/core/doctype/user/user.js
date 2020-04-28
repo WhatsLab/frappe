@@ -45,7 +45,9 @@ frappe.ui.form.on('User', {
 			if(!frm.roles_editor) {
 				var role_area = $('<div style="min-height: 300px">')
 					.appendTo(frm.fields_dict.roles_html.wrapper);
-				frm.roles_editor = new frappe.RoleEditor(role_area, frm, frm.doc.role_profile_name ? 1 : 0);
+				frm.roles_editor = new frappe.RoleEditor(role_area, frm, frm.doc.role_profile_name && (
+					frappe.user.has_role('Escalate Role')  ||
+					frappe.user.has_role('System Manager'))? 1 : 0);
 
 				var module_area = $('<div style="min-height: 300px">')
 					.appendTo(frm.fields_dict.modules_html.wrapper);
