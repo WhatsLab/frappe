@@ -171,20 +171,20 @@ frappe.RoleEditor = Class.extend({
 					checked_roles.push($(this).attr('data-user-role'));
 				}
 			} else {
-				if (frappe.user.has_role('Escalate Role')
-					&& !frappe.user_roles.includes($(this).attr('data-user-role'))
-					&& existing_role_list.includes($(this).attr('data-user-role'))
-				) {
-					console.log("NOT PERMITTED");
-					console.log($(this).attr('data-user-role'));
-					// window.alert('You do not have  permission to remove  this role');
-					// $(this.wrapper).find('[data-user-role="'+ $(this).attr('data-user-role') +'"] input[type="checkbox"]').get(0).checked = true;
-					checked_roles.push($(this).attr('data-user-role'));
-				}
-				else
-				{
+				// if (frappe.user.has_role('Escalate Role')
+				// 	&& !frappe.user_roles.includes($(this).attr('data-user-role'))
+				// 	&& existing_role_list.includes($(this).attr('data-user-role'))
+				// ) {
+				// 	console.log("NOT PERMITTED");
+				// 	console.log($(this).attr('data-user-role'));
+				// 	// window.alert('You do not have  permission to remove  this role');
+				// 	// $(this.wrapper).find('[data-user-role="'+ $(this).attr('data-user-role') +'"] input[type="checkbox"]').get(0).checked = true;
+				// 	checked_roles.push($(this).attr('data-user-role'));
+				// }
+				// else
+				// {
 					unchecked_roles.push($(this).attr('data-user-role'));
-				}
+				// }
 			}
 		});
 		console.log("vvvvvv");
