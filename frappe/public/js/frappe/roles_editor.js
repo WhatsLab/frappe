@@ -106,7 +106,7 @@ frappe.RoleEditor = Class.extend({
 					role_display: __(role),
 					is_disabled: (!frappe.user_roles.includes(role)) ? 'disabled="disabled"' : ''
 				}));
-				$(me.wrapper).append(repl('<div class="user-role" \
+				$(this.wrapper).append(repl('<div class="user-role" \
 				data-user-role="%(role_value)s">\
 				<input type="checkbox" style="margin-top:0px;" class="box" %(is_disabled)s> \
 				<a href="#" class="grey role">%(role_display)s</a>\
