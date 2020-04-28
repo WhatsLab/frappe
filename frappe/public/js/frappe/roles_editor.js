@@ -163,8 +163,8 @@ frappe.RoleEditor = Class.extend({
 				console.log(!existing_role_list.includes($(this).attr('data-user-role')));
 
 				if (frappe.user.has_role('Escalate Role') &&
-					!frappe.user_roles.includes($(this).attr('data-user-role') &&
-						!existing_role_list.includes($(this).attr('data-user-role')))) {
+					(!frappe.user_roles.includes($(this).attr('data-user-role')) &&
+						(!existing_role_list.includes($(this).attr('data-user-role'))))) {
 					console.log(frappe.user_roles);
 					console.log((frappe.user.has_role('Escalate Role') &&
 						!frappe.user_roles.includes($(this).attr('data-user-role') &&
