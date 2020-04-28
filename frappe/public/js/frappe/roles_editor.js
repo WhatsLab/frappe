@@ -163,10 +163,13 @@ frappe.RoleEditor = Class.extend({
 					checked_roles.push($(this).attr('data-user-role'));
 				}
 			} else {
-				if (frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes($(this).attr('data-user-role'))) {
+				if (frappe.user.has_role('Escalate Role')
+					&& !frappe.user_roles.includes($(this).attr('data-user-role'))
+					&& (this.frm.doc.roles || []).includes($(this).attr('data-user-role'))
+				) {
 					console.log("NOT PERMITTED");
 					console.log($(this).attr('data-user-role'));
-					window.alert('You do not have  permission to add  this role');
+					window.alert('You do not have  permission to remove  this role');
 					checked_roles.push($(this).attr('data-user-role'));
 				}
 				else
