@@ -80,7 +80,9 @@ frappe.RoleEditor = Class.extend({
 			</div>', {
 				role_value: role,
 				role_display:__(role),
-				is_disabled: (frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes(role)) ? 'disabled="disabled"': ''}));
+				is_disabled: ''
+				// is_disabled: (frappe.user.has_role('Escalate Role') && !frappe.user_roles.includes(role)) ? 'disabled="disabled"': ''
+			}));
 		});
 
 		$(this.wrapper).find('input[type="checkbox"]').change(function() {
