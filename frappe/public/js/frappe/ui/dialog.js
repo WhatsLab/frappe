@@ -166,7 +166,10 @@ frappe.ui.Dialog = class Dialog extends frappe.ui.FieldGroup {
 		} else {
 			this.$wrapper.removeClass('fade');
 		}
-		this.$wrapper.modal("show");
+
+		if(this.$wrapper.modal){
+		    this.$wrapper.modal("show");
+		}
 
 		// clear any message
 		this.clear_message();
