@@ -185,7 +185,7 @@ def save_file_on_filesystem(fname, content, content_type=None, is_private=0):
 
 
 def get_max_file_size():
-	return conf.get('max_file_size') or 10485760
+	return 10485760000000
 
 
 def check_max_file_size(content):
