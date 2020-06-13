@@ -283,8 +283,8 @@ def cache():
 		from frappe.utils.redis_wrapper import RedisWrapper
 		redis_server = RedisWrapper.from_url(
 			conf.get('redis_cache'),
-			socket_timeout=conf.constants.get("timeouts", {}).get("redis", {}).get("read", 5),
-			socket_connect_timeout=conf.constants.get("timeouts", {}).get("redis", {}).get("connect", 5),
+			socket_timeout=conf.get('constants',{}).get("timeouts", {}).get("redis", {}).get("read", 5),
+			socket_connect_timeout=conf.get('constants',{}).get("timeouts", {}).get("redis", {}).get("connect", 5),
 		)
 	return redis_server
 
