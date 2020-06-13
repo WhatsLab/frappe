@@ -26,6 +26,7 @@ class BackupGenerator:
 		backup_path_private_files=None, db_host="localhost"):
 		self.db_host = db_host
 		self.db_name = db_name
+		self.db_user = getattr(frappe.local.conf, 'db_user', '') or db_name
 		self.user = user
 		self.password = password
 		self.backup_path_files = backup_path_files
@@ -157,7 +158,7 @@ def get_backup():
 	"""
 	#if verbose: print frappe.db.cur_db_name + " " + conf.db_password
 	delete_temp_backups()
-	odb = BackupGenerator(frappe.conf.db_name, frappe.conf.db_name,\
+	odb = BackupGenerator(frappe.conf.db_name, getattr(frappe.local.conf, 'db_user', '') or frappe.conf.db_name,\
 						  frappe.conf.db_password, db_host = frappe.db.host)
 	odb.get_backup()
 	recipient_list = odb.send_email()
@@ -172,7 +173,7 @@ def scheduled_backup(older_than=6, ignore_files=False, backup_path_db=None, back
 
 def new_backup(older_than=6, ignore_files=False, backup_path_db=None, backup_path_files=None, backup_path_private_files=None, force=False):
 	delete_temp_backups(older_than = frappe.conf.keep_backups_for_hours or 24)
-	odb = BackupGenerator(frappe.conf.db_name, frappe.conf.db_name,\
+	odb = BackupGenerator(frappe.conf.db_name, getattr(frappe.local.conf, 'db_user', '') or frappe.conf.db_name,\
 						  frappe.conf.db_password,
 						  backup_path_db=backup_path_db, backup_path_files=backup_path_files,
 						  backup_path_private_files=backup_path_private_files,

@@ -339,7 +339,7 @@ def mariadb(context):
 	mysql = find_executable('mysql')
 	os.execv(mysql, [
 		mysql,
-		'-u', frappe.conf.db_name,
+		'-u', getattr(frappe.local.conf, 'db_user', '') or frappe.conf.db_name,
 		'-p'+frappe.conf.db_password,
 		frappe.conf.db_name,
 		'-h', frappe.conf.db_host or "localhost",
