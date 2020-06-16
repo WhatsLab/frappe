@@ -76,6 +76,8 @@ class Database(object):
 		self._conn = self.get_connection()
 		self._cursor = self._conn.cursor()
 		frappe.local.rollback_observers = []
+		from matajer import  test_log
+		test_log(self.cur_db_name + " - "  + self.user)
 
 	def use(self, db_name):
 		"""`USE` db_name."""
