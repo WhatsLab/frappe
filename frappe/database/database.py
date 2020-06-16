@@ -215,6 +215,7 @@ class Database(object):
 			import traceback
 			from matajer import test_log
 			test_log(traceback.format_exc())
+			test_log(query)
 			raise e
 	def explain_query(self, query, values=None):
 		"""Print `EXPLAIN` in error log."""
