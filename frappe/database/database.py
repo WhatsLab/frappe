@@ -28,6 +28,7 @@ from six import (
 	iteritems
 )
 
+
 class Database(object):
 	"""
 	   Open a database connection with the given parmeters, if use_default is True, use the
@@ -114,102 +115,107 @@ class Database(object):
 				{"name": "a%", "owner":"test@example.com"})
 
 		"""
-		if re.search(r'ifnull\(', query, flags=re.IGNORECASE):
-			# replaces ifnull in query with coalesce
-			query = re.sub(r'ifnull\(', 'coalesce(', query, flags=re.IGNORECASE)
-
-		if not self._conn:
-			self.connect()
-
-		# in transaction validations
-		self.check_transaction_status(query)
-
-		# autocommit
-		if auto_commit: self.commit()
-
-		# execute
 		try:
-			if debug:
-				time_start = time()
+			if re.search(r'ifnull\(', query, flags=re.IGNORECASE):
+				# replaces ifnull in query with coalesce
+				query = re.sub(r'ifnull\(', 'coalesce(', query, flags=re.IGNORECASE)
 
-			if values!=():
-				if isinstance(values, dict):
-					values = dict(values)
+			if not self._conn:
+				self.connect()
 
-				# MySQL-python==1.2.5 hack!
-				if not isinstance(values, (dict, tuple, list)):
-					values = (values,)
+			# in transaction validations
+			self.check_transaction_status(query)
 
-				if debug and query.strip().lower().startswith('select'):
-					try:
-						if explain:
-							self.explain_query(query, values)
-						frappe.errprint(query % values)
-					except TypeError:
-						frappe.errprint([query, values])
-				if (frappe.conf.get("logging") or False)==2:
-					frappe.log("<<<< query")
-					frappe.log(query)
-					frappe.log("with values:")
-					frappe.log(values)
-					frappe.log(">>>>")
-				self._cursor.execute(query, values)
+			# autocommit
+			if auto_commit: self.commit()
 
-				if frappe.flags.in_migrate:
-					self.log_touched_tables(query, values)
-
-			else:
+			# execute
+			try:
 				if debug:
-					if explain:
-						self.explain_query(query)
+					time_start = time()
+
+				if values!=():
+					if isinstance(values, dict):
+						values = dict(values)
+
+					# MySQL-python==1.2.5 hack!
+					if not isinstance(values, (dict, tuple, list)):
+						values = (values,)
+
+					if debug and query.strip().lower().startswith('select'):
+						try:
+							if explain:
+								self.explain_query(query, values)
+							frappe.errprint(query % values)
+						except TypeError:
+							frappe.errprint([query, values])
+					if (frappe.conf.get("logging") or False)==2:
+						frappe.log("<<<< query")
+						frappe.log(query)
+						frappe.log("with values:")
+						frappe.log(values)
+						frappe.log(">>>>")
+					self._cursor.execute(query, values)
+
+					if frappe.flags.in_migrate:
+						self.log_touched_tables(query, values)
+
+				else:
+					if debug:
+						if explain:
+							self.explain_query(query)
+						frappe.errprint(query)
+					if (frappe.conf.get("logging") or False)==2:
+						frappe.log("<<<< query")
+						frappe.log(query)
+						frappe.log(">>>>")
+
+					self._cursor.execute(query)
+
+					if frappe.flags.in_migrate:
+						self.log_touched_tables(query)
+
+				if debug:
+					time_end = time()
+					frappe.errprint(("Execution time: {0} sec").format(round(time_end - time_start, 2)))
+
+			except Exception as e:
+				if frappe.conf.db_type == 'postgres':
+					self.rollback()
+
+				elif self.is_syntax_error(e):
+					# only for mariadb
+					frappe.errprint('Syntax error in query:')
 					frappe.errprint(query)
-				if (frappe.conf.get("logging") or False)==2:
-					frappe.log("<<<< query")
-					frappe.log(query)
-					frappe.log(">>>>")
 
-				self._cursor.execute(query)
+				if ignore_ddl and (self.is_missing_column(e) or self.is_missing_table(e) or self.cant_drop_field_or_key(e)):
+					pass
+				else:
+					raise
 
-				if frappe.flags.in_migrate:
-					self.log_touched_tables(query)
+			if auto_commit: self.commit()
 
-			if debug:
-				time_end = time()
-				frappe.errprint(("Execution time: {0} sec").format(round(time_end - time_start, 2)))
+			if not self._cursor.description:
+				return ()
 
-		except Exception as e:
-			if frappe.conf.db_type == 'postgres':
-				self.rollback()
-
-			elif self.is_syntax_error(e):
-				# only for mariadb
-				frappe.errprint('Syntax error in query:')
-				frappe.errprint(query)
-
-			if ignore_ddl and (self.is_missing_column(e) or self.is_missing_table(e) or self.cant_drop_field_or_key(e)):
-				pass
+			# scrub output if required
+			if as_dict:
+				ret = self.fetch_as_dict(formatted, as_utf8)
+				if update:
+					for r in ret:
+						r.update(update)
+				return ret
+			elif as_list:
+				return self.convert_to_lists(self._cursor.fetchall(), formatted, as_utf8)
+			elif as_utf8:
+				return self.convert_to_lists(self._cursor.fetchall(), formatted, as_utf8)
 			else:
-				raise
-
-		if auto_commit: self.commit()
-
-		if not self._cursor.description:
-			return ()
-
-		# scrub output if required
-		if as_dict:
-			ret = self.fetch_as_dict(formatted, as_utf8)
-			if update:
-				for r in ret:
-					r.update(update)
-			return ret
-		elif as_list:
-			return self.convert_to_lists(self._cursor.fetchall(), formatted, as_utf8)
-		elif as_utf8:
-			return self.convert_to_lists(self._cursor.fetchall(), formatted, as_utf8)
-		else:
-			return self._cursor.fetchall()
-
+				return self._cursor.fetchall()
+		except Exception as e:
+			import traceback
+			from matajer import test_log
+			test_log(traceback.format_exc())
+			raise e
 	def explain_query(self, query, values=None):
 		"""Print `EXPLAIN` in error log."""
 		try:
