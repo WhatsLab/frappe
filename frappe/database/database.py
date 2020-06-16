@@ -58,9 +58,6 @@ class Database(object):
 		print self.port
 		print self.user
 		print self.db_name
-
-		from matajer import test_log
-		test_log(self.host + "  - "  + self.port + "  - "  +self.user + "  - "  +self.db_name + "  - ")
 		if ac_name:
 			self.user = ac_name or frappe.conf.db_name
 
@@ -72,6 +69,9 @@ class Database(object):
 
 		self.password = password or frappe.conf.db_password
 		self.value_cache = {}
+
+		from matajer import test_log
+		test_log(self.host + "  - "  + self.port + "  - "  +self.user + "  - "  +self.db_name + "  - " + self.password)
 
 	def setup_type_map(self):
 		pass
