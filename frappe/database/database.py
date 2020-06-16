@@ -54,7 +54,13 @@ class Database(object):
 		self.user = user or frappe.conf.db_name
 		self.db_name = frappe.conf.db_name
 		self._conn = None
+		print self.host
+		print self.port
+		print self.user
+		print self.db_name
 
+		from matajer import test_log
+		test_log(self.host + "  - "  + self.port + "  - "  +self.user + "  - "  +self.db_name + "  - ")
 		if ac_name:
 			self.user = ac_name or frappe.conf.db_name
 
