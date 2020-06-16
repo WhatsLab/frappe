@@ -70,8 +70,8 @@ class Database(object):
 		self.password = password or frappe.conf.db_password
 		self.value_cache = {}
 
-		from matajer import test_log
-		test_log(self.host + "  - "  + self.port + "  - "  +self.user + "  - "  +self.db_name + "  - " + self.password)
+		# from matajer import test_log
+		# test_log(self.host + "  - "  + self.port + "  - "  +self.user + "  - "  +self.db_name + "  - " + self.password)
 
 	def setup_type_map(self):
 		pass
