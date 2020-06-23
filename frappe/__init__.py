@@ -220,6 +220,10 @@ def get_replica_host():
 			return local.conf[rep_key]
 	return local.conf.replica_host
 
+def master_query():
+    return getattr(local, 'primary_db', local.db)
+
+
 def get_site_config(sites_path=None, site_path=None):
 	"""Returns `site_config.json` combined with `sites/common_site_config.json`.
 	`site_config` is a set of site wide settings like database name, password, email etc."""
