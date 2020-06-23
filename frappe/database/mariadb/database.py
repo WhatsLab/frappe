@@ -79,9 +79,10 @@ class MariaDBDatabase(Database):
 			conversions.update({
 				TimeDelta: conversions[binary_type]
 			})
+		self.user = getattr(frappe.conf, "db_user", None) or frappe.conf.db_name
 
 		if usessl:
-			conn = pymysql.connect(self.host, self.user or '', self.password or '',
+			conn = pymysql.connect(self.host, getattr(frappe.conf, "db_user", None) or self.user or '', self.password or '', database=frappe.conf.db_name,
 				port=self.port, charset='utf8mb4', use_unicode = True, ssl=ssl_params,
 				conv = conversions, local_infile = frappe.conf.local_infile)
 		else:
@@ -91,9 +92,9 @@ class MariaDBDatabase(Database):
 
 		# MYSQL_OPTION_MULTI_STATEMENTS_OFF = 1
 		# # self._conn.set_server_option(MYSQL_OPTION_MULTI_STATEMENTS_OFF)
-
+		print(str(frappe.conf.db_name))
 		if self.user != 'root':
-			conn.select_db(self.user)
+			conn.select_db(frappe.conf.db_name)
 
 		return conn
 

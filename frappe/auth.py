@@ -91,7 +91,7 @@ class HTTPRequest:
 
 	def connect(self, ac_name = None):
 		"""connect to db, from ac_name or db_name"""
-		frappe.local.db = frappe.database.get_db(user = self.get_db_name(), \
+		frappe.local.db = frappe.database.get_db(user=getattr(frappe.local.conf, 'db_user', '') or self.get_db_name(), \
 			password = getattr(conf, 'db_password', ''))
 
 class LoginManager:
