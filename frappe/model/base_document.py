@@ -348,14 +348,16 @@ class BaseDocument(object):
 			return
 
 		d = self.get_valid_dict(convert_dates_to_str=True, ignore_nulls = self.doctype in ('DocType', 'DocField', 'DocPerm'))
-
 		# don't update name, as case might've been changed
 		name = d['name']
 		del d['name']
+		if d.get("issues_resolved"):
+			del d["issues_resolved"]
 
 		columns = list(d)
 
 		try:
+
 			frappe.db.sql("""UPDATE `tab{doctype}`
 				SET {values} WHERE `name`=%s""".format(
 					doctype = self.doctype,
