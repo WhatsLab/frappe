@@ -126,6 +126,13 @@ class DatabaseQuery(object):
 		if self.return_query:
 			return query
 		else:
+			try:
+				if "`taborders_products`.promotion_id like" in query:
+					from matajer import test_log
+					test_log("Long Query:\n{1}\nUser: {0}".format(frappe.auth.get_logged_user(), str(query)))
+					raise frappe.PermissionError(_("Please contact @Customer Support immediately. Do not change the filters nor close the current Page"))
+			except frappe.PermissionError as e: raise e
+			else: pass
 			return frappe.db.sql(query, as_dict=not self.as_list, debug=self.debug, update=self.update)
 
 	def prepare_args(self):
