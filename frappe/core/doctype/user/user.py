@@ -217,7 +217,7 @@ class User(Document):
 	def validate_reset_password(self):
 		pass
 
-	def reset_password(self, send_email=True, password_expired=False):
+	def reset_password(self, send_email=False, password_expired=False):
 		from frappe.utils import random_string, get_url
 
 		key = random_string(32)
