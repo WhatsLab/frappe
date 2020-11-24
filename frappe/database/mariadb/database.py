@@ -41,7 +41,7 @@ engine = create_engine(URL ,
 				"conv": conversions,
 				"local_infile": frappe.conf.local_infile
 			},
-		max_overflow = 50
+		max_overflow = 500
 
 	)
 
