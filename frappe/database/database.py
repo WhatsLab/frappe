@@ -886,11 +886,11 @@ class Database(object):
 	def close(self):
 		"""Close database connection."""
 		if self._conn:
-			# self._cursor.close()
-			self._conn.close()
-			self._cursor = None
-			self._conn = None
-
+			#self._cursor.close()
+			#self._conn.close()
+			# self._cursor = None
+			# self._conn = None
+			self.alchemy_connection.close()
 	@staticmethod
 	def escape(s, percent=True):
 		"""Excape quotes and percent in given string."""

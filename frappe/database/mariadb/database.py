@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import frappe
 import warnings
+from sqlalchemy import create_engine
 
 import pymysql
 from pymysql.times import TimeDelta
@@ -13,6 +14,36 @@ from markdown2 import UnicodeWithAttrs
 from frappe.database.database import Database
 from six import PY2, binary_type, text_type, string_types
 from frappe.database.mariadb.schema import MariaDBTable
+
+conversions.update({
+			FIELD_TYPE.NEWDECIMAL: float,
+			FIELD_TYPE.DATETIME: get_datetime,
+			UnicodeWithAttrs: conversions[text_type]
+		})
+
+# ssl_params = {
+# 				'ca':frappe.conf.db_ssl_ca,
+# 				'cert':frappe.conf.db_ssl_cert,
+# 				'key':frappe.conf.db_ssl_key
+# 			}
+URL = 'mysql+pymysql://{user}:{password}@{host}:{port}/{database}'.format(
+				user = getattr(frappe.conf, "db_user", None) or '',
+				password = frappe.conf.db_password,
+				host = frappe.conf.db_host or 'localhost',
+				database = frappe.conf.db_name,
+				port = frappe.conf.db_port or 3306
+				)
+engine = create_engine(URL , 
+	connect_args = {
+				"charset": 'utf8mb4',
+				"use_unicode" : True,
+				# "ssl": ssl_params,
+				"conv": conversions,
+				"local_infile": frappe.conf.local_infile
+			},
+		max_overflow = 50
+
+	)
 
 
 class MariaDBDatabase(Database):
@@ -74,7 +105,7 @@ class MariaDBDatabase(Database):
 			FIELD_TYPE.DATETIME: get_datetime,
 			UnicodeWithAttrs: conversions[text_type]
 		})
-
+		global engine
 		if PY2:
 			conversions.update({
 				TimeDelta: conversions[binary_type]
@@ -82,20 +113,30 @@ class MariaDBDatabase(Database):
 		self.user = getattr(frappe.conf, "db_user", None) or frappe.conf.db_name
 
 		if usessl:
-			conn = pymysql.connect(self.host, getattr(frappe.conf, "db_user", None) or self.user or '', self.password or '', database=frappe.conf.db_name,
-				port=self.port, charset='utf8mb4', use_unicode = True, ssl=ssl_params,
-				conv = conversions, local_infile = frappe.conf.local_infile)
+			
+
+			self.alchemy_connection = engine.connect()
+			conn = self.alchemy_connection.connection.connection
+			# conn = pymysql.connect(self.host, getattr(frappe.conf, "db_user", None) or self.user or '', self.password or '', database=frappe.conf.db_name,
+			# 	port=self.port, charset='utf8mb4', use_unicode = True, ssl=ssl_params,
+			# 	conv = conversions, local_infile = frappe.conf.local_infile)
 		else:
-			conn = pymysql.connect(self.host, self.user or '', self.password or '',
-				port=self.port, charset='utf8mb4', use_unicode = True, conv = conversions,
-				local_infile = frappe.conf.local_infile)
+		
+			self.alchemy_connection = engine.connect()
+			frappe.local.alchemy_connection = self.alchemy_connection
+			conn = self.alchemy_connection.connection.connection
+
+
+			# conn = pymysql.connect(self.host, self.user or '', self.password or '',
+			# 	port=self.port, charset='utf8mb4', use_unicode = True, conv = conversions,
+			# 	local_infile = frappe.conf.local_infile)
 
 		# MYSQL_OPTION_MULTI_STATEMENTS_OFF = 1
 		# # self._conn.set_server_option(MYSQL_OPTION_MULTI_STATEMENTS_OFF)
 		print(str(frappe.conf.db_name))
-		if self.user != 'root':
-			conn.select_db(frappe.conf.db_name)
-
+		# if self.user != 'root':
+		# 	conn.select_db(frappe.conf.db_name)
+		self.alchemy_connection = engine.connect()
 		return conn
 
 	def get_database_size(self):

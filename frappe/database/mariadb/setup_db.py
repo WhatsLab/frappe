@@ -53,7 +53,7 @@ def setup_database(force, source_sql, verbose):
 	if verbose: print("Granted privileges to user %s and database %s" % (db_name, db_name))
 
 	# close root connection
-	root_conn.close()
+	#root_conn.close()
 
 	bootstrap_database(db_name, verbose, source_sql)
 
