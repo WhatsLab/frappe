@@ -249,7 +249,7 @@ class Document(BaseDocument):
 		for d in self.get_all_children():
 			d.db_insert()
 
-		self.run_method("after_insert")
+		# self.run_method("after_insert")
 		self.flags.in_insert = True
 
 		if self.get("amended_from"):

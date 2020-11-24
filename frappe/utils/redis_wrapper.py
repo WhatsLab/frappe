@@ -30,7 +30,6 @@ class RedisWrapper(redis.Redis):
 
 	def set_value(self, key, val, user=None, expires_in_sec=None):
 		"""Sets cache value.
-
 		:param key: Cache key
 		:param val: Value to be cached
 		:param user: Prepends key with User
@@ -43,7 +42,7 @@ class RedisWrapper(redis.Redis):
 
 		try:
 			if expires_in_sec:
-				self.setex(key, pickle.dumps(val), expires_in_sec)
+				self.setex(name=key, time=expires_in_sec, value=pickle.dumps(val))
 			else:
 				self.set(key, pickle.dumps(val))
 
@@ -53,7 +52,6 @@ class RedisWrapper(redis.Redis):
 	def get_value(self, key, generator=None, user=None, expires=False):
 		"""Returns cache value. If not found and generator function is
 			given, it will call the generator.
-
 		:param key: Cache key.
 		:param generator: Function to be called to generate a value if `None` is returned.
 		:param expires: If the key is supposed to be with an expiry, don't store it in frappe.local
@@ -140,7 +138,16 @@ class RedisWrapper(redis.Redis):
 	def llen(self, key):
 		return super(RedisWrapper, self).llen(self.make_key(key))
 
+	def lrange(self, key, start, stop):
+		return super(RedisWrapper, self).lrange(self.make_key(key), start, stop)
+
+	def ltrim(self, key, start, stop):
+		return super(RedisWrapper, self).ltrim(self.make_key(key), start, stop)
+
 	def hset(self, name, key, value, shared=False):
+		if key is None:
+			return
+
 		_name = self.make_key(name, shared=shared)
 
 		# set in local
@@ -163,6 +170,8 @@ class RedisWrapper(redis.Redis):
 		_name = self.make_key(name, shared=shared)
 		if not _name in frappe.local.cache:
 			frappe.local.cache[_name] = {}
+
+		if not key: return None
 
 		if key in frappe.local.cache[_name]:
 			return frappe.local.cache[_name][key]
@@ -230,4 +239,3 @@ class RedisWrapper(redis.Redis):
 	def smembers(self, name):
 		"""Return all members of the set"""
 		return super(RedisWrapper, self).smembers(self.make_key(name))
-
