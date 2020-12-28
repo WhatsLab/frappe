@@ -13,6 +13,7 @@ RUN apt-get install -y --no-install-suggests --no-install-recommends \
     nodejs \
     default-libmysqlclient-dev \
     libssl-dev \
+    libcurl4-openssl-dev \ 
     wkhtmltopdf \
     curl \
     gcc \
@@ -21,7 +22,8 @@ RUN apt-get install -y --no-install-suggests --no-install-recommends \
     sudo \
     postgresql-client \
     curl \
-    gnupg
+    gnupg \
+    python-pycurl
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
