@@ -11,12 +11,12 @@ build(){
 
     # frappe branch
     if [ "$FRAPPE_BRANCH" = "" ]; then
-        FRAPPE_BRANCH="master"
+        FRAPPE_BRANCH="version-12"
     fi
 
     # Python Version
     if [ "$FRAPPE_PYTHON" = "" ]; then
-        FRAPPE_PYTHON="python3"
+        FRAPPE_PYTHON="python2.7"
     fi
 
     echo "[i] Python Version: $FRAPPE_PYTHON"
