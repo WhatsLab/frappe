@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=3.7.6-slim-buster
+ARG BASE_IMAGE=2.7.18-slim-buster
 FROM python:$BASE_IMAGE
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -40,14 +40,14 @@ RUN chown -R 1000:1000 /home/frappe
 USER frappe
 WORKDIR /home/frappe
 
-ARG FRAPPE_PATH="https://github.com/frappe/frappe.git"
-ARG FRAPPE_BRANCH="master"
-ARG FRAPPE_PYTHON=python3
+ARG FRAPPE_PATH="https://github.com/WhatsLab/frappe.git"
+ARG FRAPPE_BRANCH="version-12"
+ARG FRAPPE_PYTHON=python
 ARG FRAPPE="frappe-bench"
 ARG DB_HOST="127.0.0.1"
 ARG MYSQL_ROOT_PWD="root"
-ARG DB_NAME="localsite"
-ARG SITE_NAME="site1.local"
+ARG DB_NAME="matajer"
+ARG SITE_NAME="www.nana.market"
 ARG BENCH_BRANCH=master
 ARG BENCH_PATH=https://github.com/frappe/bench.git
 ENV PATH="${PATH}:/home/frappe/.local/bin"

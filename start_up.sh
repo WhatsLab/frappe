@@ -16,7 +16,7 @@ build(){
 
     # Python Version
     if [ "$FRAPPE_PYTHON" = "" ]; then
-        FRAPPE_PYTHON="python2.7"
+        FRAPPE_PYTHON="python"
     fi
 
     echo "[i] Python Version: $FRAPPE_PYTHON"
