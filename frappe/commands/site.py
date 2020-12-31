@@ -235,7 +235,7 @@ def migrate(context, rebuild_website=False, skip_failing=False):
 			frappe.destroy()
 
 	print("Compiling Python Files...")
-	compileall.compile_dir('../apps', quiet=1, rx=re.compile('.*node_modules.*'))
+	compileall.compile_dir('../apps', quiet=1, rx=re.compile('.*node_modules.*|.*automation.*'))
 
 @click.command('run-patch')
 @click.argument('module')
