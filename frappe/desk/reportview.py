@@ -145,18 +145,6 @@ def export_query():
 
 
 	db_query = DatabaseQuery(doctype)
-
-	################
-	try:
-		if "Invoice Agent Payments" in doctype or "orders" in doctype:
-			for temp in form_params['fields']:
-				if "invoice" in temp or "promotion_id" in temp:
-					from matajer import test_log
-					test_log("Long Query:\n{1}\nUser: {0}".format(frappe.auth.get_logged_user(), str(form_params)))
-					raise frappe.PermissionError(_("Please contact @Customer Support immediately. Do not change the filters nor close the current Page"))
-	except frappe.PermissionError as e: raise e
-	################
-
 	ret = db_query.execute(**form_params)
 
 	if add_totals_row:
