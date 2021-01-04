@@ -540,10 +540,10 @@ class File(NestedSet):
 		max_file_size = get_max_file_size()
 		file_size = len(self.content)
 
-		if file_size > max_file_size:
-			frappe.msgprint(_("File size exceeded the maximum allowed size of {0} MB").format(
-				max_file_size / 1048576),
-				raise_exception=MaxFileSizeReachedError)
+		# if file_size > max_file_size:
+		# 	frappe.msgprint(_("File size exceeded the maximum allowed size of {0} MB").format(
+		# 		max_file_size / 1048576),
+		# 		raise_exception=MaxFileSizeReachedError)
 
 		return file_size
 
