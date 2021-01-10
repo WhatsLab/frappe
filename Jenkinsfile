@@ -14,6 +14,15 @@ pipeline {
                 }
             }
         }
+        stage('Remove Docker Image') {
+            steps{
+                script {
+                    tag = sh (script: 'cat version', returnStdout: true)
+                    sh "/usr/bin/docker rmi ${registry}:latest"
+                    sh "/usr/bin/docker rmi ${registry}:${tag}"
+                }
+            }
+        }
     }
 }
 
